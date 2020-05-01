@@ -1,0 +1,92 @@
+    <!-- <mat-toolbar color="primary">
+        <span class="fill-remaining-space"></span>
+        <span class="title-center">Match Form</span>
+        <span class="fill-remaining-space"></span>
+    </mat-toolbar>     -->
+    Match Details
+
+    <form [formGroup] = "matchForm">   
+    <mat-grid-list cols="4" rowHeight="72">
+        <mat-grid-tile>
+            <div class="control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Match Name</mat-label>
+                    <input matInput formControlName="matchName" id="matchName" name="matchName">
+                    <mat-error *ngIf="hasError('matchName','required')">this field is required</mat-error>
+                    <mat-error *ngIf="hasError('matchName','maxlength')">maximum 50 characters are allowed</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Match Date</mat-label>
+                    <input matInput [min]="minDate" format="DD/MM/YYYY" formControlName="matchDate" #mDate [matDatepicker]="picker" (click)="picker.open()" id="matchDate" name="matchDate" placeholder="DD/MM/YYYY">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>                
+                    <!-- format="MM/DD/YYYY"     -->
+                    <mat-error *ngIf="hasError('matchDate','required')">this field is required</mat-error>
+                    <!-- <mat-error *ngIf="hasError('matchDate','maxlength')">maximum 50 characters are allowed</mat-error> -->
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Team One</mat-label>
+                    <input matInput formControlName="teamOne" id="teamOne" name="teamOne">
+                    <mat-error *ngIf="hasError('teamOne','required')">this field is required</mat-error>
+                    <mat-error *ngIf="hasError('teamOne','maxlength')">maximum 25 characters are allowed</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Team Two</mat-label>
+                    <input matInput formControlName="teamTwo" id="teamTwo" name="teamTwo">
+                    <mat-error *ngIf="hasError('teamTwo','required')">this field is required</mat-error>
+                    <mat-error *ngIf="hasError('teamTwo','maxlength')">maximum 25 characters are allowed</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <div class="control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Start Time</mat-label>
+                    <input matInput formControlName="startTime" placeholder="HH:MM(24 hours)" id="startTime" name="startTime">
+                    <mat-error *ngIf="hasError('startTime','required')">this field is required</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan] = "2">
+            <div class="addr-control-container">
+                <mat-form-field class="control-full-width">
+                    <mat-label>Match Address</mat-label>
+                    <input matInput formControlName="mAddress" id="mAddress" name="mAddress">
+                    <mat-error *ngIf="hasError('mAddress','required')">this field is required</mat-error>
+                    <mat-error *ngIf="hasError('mAddress','maxlength')">maximum 70 characters are allowed</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>         
+
+        <mat-grid-tile>
+            <div class="control-container">                
+                <button type="submit" (click)="openDialog()" [disabled]="!matchForm.valid"  class="control-full-width" mat-flat-button color="primary">Add Players</button>
+                <!-- [disabled]="!matchForm.valid" -->            
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list> 
+    
+    </form>
+
+    <player-table></player-table>
+
+    <button type="button" (click)="submitMatchDetails()" [disabled]="(!matchForm.valid) || (isAllPlayers==false)" class="btnSubmitMatch" mat-raised-button color="primary">Submit Match Details</button>
+
+
+
+
+
+
