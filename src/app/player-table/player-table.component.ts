@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild, ɵPlayer } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
+import {MatSort,MatSortHeader} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {PlayerDataService} from '../services/player-data.service';
 
@@ -11,12 +11,14 @@ import {PlayerDataService} from '../services/player-data.service';
 })
 export class PlayerTableComponent implements OnInit {
   public PlayerData:Player[] = [];
+  
 
   constructor(private playerService:PlayerDataService) {  }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.PlayerData); 
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngAfterContentChecked()
@@ -26,6 +28,7 @@ export class PlayerTableComponent implements OnInit {
 
     this.dataSource = new MatTableDataSource(this.PlayerData); 
     //this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
    }   
 
   applyFilter(event: Event) {

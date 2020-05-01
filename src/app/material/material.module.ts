@@ -24,7 +24,8 @@ import { MAT_DATE_LOCALE } from '@angular/material';
     Material.MatSortModule,
     // Material.MatTableDataSource,
     Material.MatCardModule,
-    Material.MatNativeDateModule
+    Material.MatNativeDateModule,
+    Material.MatSortModule
       
   ],
   exports:
@@ -43,7 +44,8 @@ import { MAT_DATE_LOCALE } from '@angular/material';
     Material.MatSortModule,
     // Material.MatTableDataSource,
     Material.MatCardModule,
-    Material.MatNativeDateModule
+    Material.MatNativeDateModule,
+    Material.MatSortModule
     
   ],
   providers:[{provide:MAT_DATE_LOCALE,useValue:'en-GB'}]
