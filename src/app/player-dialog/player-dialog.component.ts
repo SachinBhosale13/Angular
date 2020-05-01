@@ -39,8 +39,7 @@ export class PlayerDialogComponent implements OnInit {
         PlayerPosition:parseInt( this.playerForm.get('playerPosition').value),
         PlayerTeam:this.playerForm.get('playerTeam').value
       }
-
-      //console.log("Dialog Player:"+ JSON.stringify(this.player));
+      
       this.playerService.AddPlayer(this.player);
   }
 }

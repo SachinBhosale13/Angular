@@ -12,22 +12,14 @@ export class PlayerDataService {
   public noOfPlayers:number=0;
   public request:RequestData;
   public response:ResponseData;
-
   
   constructor(private http:HttpClient) {}
-  
-  // public AddMatch(mt:Match)
-  // {
-  //   this.matchData = mt;
-  //   console.log("Service Match: " +JSON.stringify(this.matchData));
-  // }
 
   public AddPlayer(pl:Player)
   {
     console.log("Match Data in service:"+JSON.stringify(pl));
     this.playerData.push(pl);
-    this.noOfPlayers += 1;
-    //console.log("Service Player Array: "+ JSON.stringify(this.playerData));
+    this.noOfPlayers += 1;    
   }
 
   public SubmitMatchDetails(matchData:Match):Observable<any>
@@ -45,13 +37,6 @@ export class PlayerDataService {
       MatchAddress:matchData.mAddress,
       lstPlayers:this.playerData
     }
-    // this.request.matchName = this.matchData.matchName;
-    // this.request.matchDate = this.matchData.matchDate;
-    // this.request.teamOne = this.matchData.teamOne;
-    // this.request.teamTwo = this.matchData.teamTwo;
-    // this.request.startTime = this.matchData.startTime;
-    // this.request.mAddress = this.matchData.mAddress;
-    // this.request.playerData = this.playerData;
 
     console.log("Request Data for API: "+JSON.stringify(this.request));
 
