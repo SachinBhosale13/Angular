@@ -27,7 +27,7 @@ export class PlayerDataService {
     console.log("Match Data in service:"+JSON.stringify(pl));
     this.playerData.push(pl);
     this.noOfPlayers += 1;
-    //console.log("Service Player Array: "+ JSON.stringify(this.playerData));
+    ////console.log("Service Player Array: "+ JSON.stringify(this.playerData));
   }
 
   public SubmitMatchDetails(matchData:Match):Observable<any>
