@@ -12,6 +12,7 @@ export class PlayerDataService {
   public noOfPlayers:number=0;
   public request:RequestData;
   public response:ResponseData;
+  public teamsArr:string[] = teams;
   
   constructor(private http:HttpClient) {}
 
@@ -49,6 +50,8 @@ export class PlayerDataService {
     return this.http.post<any>('http://localhost:51456/api/SubmitMatchData',this.request,options);
   }
 }
+
+const teams=['Afghanistan','Australia','Bangladesh','England','India','Ireland','New Zealand','Pakistan','South Africa','Sri Lanka','West Indies','Zimbabwe'];
 
 
 export interface RequestData

@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Material from "@angular/material";
 import { MAT_DATE_LOCALE } from '@angular/material';
-
-
-
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [],
@@ -25,7 +23,8 @@ import { MAT_DATE_LOCALE } from '@angular/material';
     // Material.MatTableDataSource,
     Material.MatCardModule,
     Material.MatNativeDateModule,
-    Material.MatSortModule
+    Material.MatSortModule,
+    NgxMaterialTimepickerModule
       
   ],
   exports:
@@ -45,7 +44,8 @@ import { MAT_DATE_LOCALE } from '@angular/material';
     // Material.MatTableDataSource,
     Material.MatCardModule,
     Material.MatNativeDateModule,
-    Material.MatSortModule
+    Material.MatSortModule,
+    NgxMaterialTimepickerModule
     
   ],
   providers:[{provide:MAT_DATE_LOCALE,useValue:'en-GB'}]

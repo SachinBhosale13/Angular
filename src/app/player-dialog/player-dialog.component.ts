@@ -1,6 +1,7 @@
 import { Component, OnInit,NgModule } from '@angular/core';
 import {FormControl,FormGroup,Validators} from '@angular/forms';
 import {PlayerDataService} from '../services/player-data.service';
+import {CustomValidators} from '../Shared/validator';
 
 
 @Component({
@@ -11,13 +12,16 @@ import {PlayerDataService} from '../services/player-data.service';
 export class PlayerDialogComponent implements OnInit {
   public playerForm:FormGroup;
   public player:Player;
+  public teamsArr:string[]=[];
 
-  constructor(private playerService:PlayerDataService) { }
+  constructor(private playerService:PlayerDataService) {
+    this.teamsArr=this.playerService.teamsArr;
+   }
 
   ngOnInit() {
     this.playerForm = new FormGroup
     ({
-        playerName:new FormControl('',[Validators.required,Validators.maxLength(50)]),
+        playerName:new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(50),CustomValidators.alphabetOnly]),
         playerType:new FormControl('',[Validators.required]),
         playerPosition:new FormControl('',[Validators.required,Validators.maxLength(2)]),
         playerTeam:new FormControl('',[Validators.required,Validators.maxLength(25)])
