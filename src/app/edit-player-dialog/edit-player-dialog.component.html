@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Edit Player</h1>
+<form [formGroup]="playerForm">
+<mat-dialog-content>
+    <mat-grid-list cols="1" rowHeight="65">
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">                
+                <mat-label>Player Name*</mat-label>                
+                <input matInput formControlName="playerName" id="playerName">
+                <mat-error *ngIf="hasError('playerName','required')">this field is required</mat-error>  
+                <mat-error *ngIf="hasError('playerName','minlength')">minimum 2 characters are mandatory</mat-error>
+                <mat-error *ngIf="hasError('playerName','maxlength')">maximum 50 characters are allowed</mat-error> 
+                <mat-error *ngIf="hasError('playerName','alphabetOnly')">Only alphabets are allowed</mat-error> 
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Type*</mat-label>                
+                <mat-select formControlName="playerType" id="playerType">
+                    <mat-option value="Batsman">Batsman</mat-option>
+                    <mat-option value="Bowler">Bowler</mat-option>
+                    <mat-option value="All-rounder">All-rounder</mat-option>
+                    <mat-option value="Wicket-keeper">Wicket-keeper</mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('playerType','required')">this field is required</mat-error>   
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Position*</mat-label>
+                <input matInput placeholder="ex. 2" formControlName="playerPosition" id="playerPosition"> 
+                <mat-error *ngIf="hasError('playerPosition','required')">this field is required</mat-error> 
+                <mat-error *ngIf="hasError('playerPosition','pattern')">position is number from 0 to 11</mat-error> 
+                <mat-error *ngIf="hasError('playerPosition','maxlength')">maximum 2 digits are allowed</mat-error>
+                
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Team*</mat-label>
+                <mat-select class="teams" formControlName="playerTeam" id="playerTeam" name="playerTeam">
+                    <mat-option *ngFor="let t of teamsArr;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
+                </mat-select>
+                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
+
+                <!-- <input matInput placeholder="ex. India" formControlName="playerTeam" id="playerTeam"> 
+                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error> 
+                <mat-error *ngIf="hasError('playerTeam','maxlength')">maximum 25 characters are allowed</mat-error>       -->
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>         
+</mat-dialog-content>
+
+<mat-dialog-actions class="pull-right">
+  <button mat-button mat-dialog-close><mat-icon>clear</mat-icon> Cancel</button>
+  <button mat-flat-button color="primary" type="submit" (click)="UpdateThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>add</mat-icon> update</button>  
+  <!-- cdkFocusInitial -->
+</mat-dialog-actions>
+
+</form>

@@ -2,25 +2,21 @@ import { Component, OnInit,NgModule } from '@angular/core';
 import {FormControl,FormGroup,Validators} from '@angular/forms';
 import {PlayerDataService} from '../services/player-data.service';
 import {CustomValidators} from '../Shared/validator';
+import {Player} from '../Shared/Player';
 
 
 @Component({
-  selector: 'player-dialog',
-  templateUrl: './player-dialog.component.html',
-  styleUrls: ['./player-dialog.component.css']
+  selector: 'add-player-dialog',
+  templateUrl: './add-player-dialog.component.html',
+  styleUrls: ['./add-player-dialog.component.css']
 })
-export class PlayerDialogComponent implements OnInit {
+export class AddPlayerDialogComponent implements OnInit {
   public playerForm:FormGroup;
   public player:Player;
   public teamsArr:string[]=[];
   //public SelectedTeamsIndx:number[]=[];
 
-  constructor(private playerService:PlayerDataService) {
-    this.teamsArr = [];
-    this.teamsArr = this.playerService.SelectedTeams;
-
-    console.log("Teams in modal: "+this.teamsArr);
-   }
+  constructor(private playerService:PlayerDataService) { }
 
   ngOnInit() {
     this.playerForm = new FormGroup
@@ -30,6 +26,11 @@ export class PlayerDialogComponent implements OnInit {
         playerPosition:new FormControl('',[Validators.required,Validators.maxLength(2),Validators.pattern("^([1-9]|1[01])")]),
         playerTeam:new FormControl('',[Validators.required,Validators.maxLength(25)])
     });
+
+    this.teamsArr = [];
+    this.teamsArr = this.playerService.SelectedTeams;
+
+    console.log("Teams in modal: "+this.teamsArr);
   }
 
   // mat-error
@@ -40,6 +41,12 @@ export class PlayerDialogComponent implements OnInit {
 
   public AddThisPlayer()
   {  
+    if(this.playerService.playerData.some)
+    {
+     // this.playerId = this.playerService.playerData.;
+    }
+      
+      //this.playerId = this.playerId + 1;
       this.player = 
       {
         PlayerName:this.playerForm.get('playerName').value,
@@ -52,10 +59,10 @@ export class PlayerDialogComponent implements OnInit {
   }
 }
 
-export interface Player
-{
-  PlayerName:string;
-  PlayerType:string;
-  PlayerPosition:number;
-  PlayerTeam:string;
-}
+// export interface Player
+// {
+//   PlayerName:string;
+//   PlayerType:string;
+//   PlayerPosition:number;
+//   PlayerTeam:string;
+// }

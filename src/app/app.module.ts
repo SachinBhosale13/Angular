@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { MatchComponent } from './match/match.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from './material/material.module';
-import { PlayerDialogComponent } from './player-dialog/player-dialog.component';
+import { AddPlayerDialogComponent } from './add-player-dialog/add-player-dialog.component';
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dialog.component';
 
 
 
@@ -18,10 +19,11 @@ import { MAT_DATE_LOCALE } from '@angular/material';
   declarations: [
     AppComponent,
     MatchComponent,
-    PlayerDialogComponent,
-    PlayerTableComponent
+    AddPlayerDialogComponent,
+    PlayerTableComponent,
+    EditPlayerDialogComponent
   ],
-  entryComponents:[PlayerDialogComponent],
+  entryComponents:[AddPlayerDialogComponent,EditPlayerDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

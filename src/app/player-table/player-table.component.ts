@@ -3,6 +3,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort,MatSortHeader} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {PlayerDataService} from '../services/player-data.service';
+import {Player} from '../Shared/Player';
+import { MatDialog } from '@angular/material';
+//import {AddPlayerDialogComponent} from '../add-player-dialog/add-player-dialog.component';
+import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dialog.component';
+
 
 @Component({
   selector: 'player-table',
@@ -10,11 +15,14 @@ import {PlayerDataService} from '../services/player-data.service';
   styleUrls: ['./player-table.component.css']
 })
 export class PlayerTableComponent implements OnInit {
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   public PlayerData:Player[] = [];  
 
-  constructor(private playerService:PlayerDataService) {  }
+  constructor(private playerService:PlayerDataService,private dialog:MatDialog) { }
 
-  ngOnInit() {
+  ngOnInit() {   
+    
     this.dataSource = new MatTableDataSource(this.PlayerData); 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -23,7 +31,7 @@ export class PlayerTableComponent implements OnInit {
   ngAfterContentChecked()
    {    
      this.PlayerData = this.playerService.playerData;
-     console.log(this.PlayerData);   
+     //console.log("Player data in table: "+ JSON.stringify(this.PlayerData));   
 
     this.dataSource = new MatTableDataSource(this.PlayerData); 
     //this.dataSource.paginator = this.paginator;
@@ -39,20 +47,55 @@ export class PlayerTableComponent implements OnInit {
     }
   }
 
+  deletePlayer(pId:number)
+  {
+    this.playerService.DeletePlayer(pId);
+  }
+
+  editPlayer(pIndex:number)
+  {    
+    console.log("Editing Player of index: " + pIndex);
+    var pl:Player;
+    
+    for(var i=0;i<this.PlayerData.length;i++)
+    {
+      if(pIndex==i)
+      {
+        pl=
+        {          
+          PlayerName:this.PlayerData[i].PlayerName,
+          PlayerType:this.PlayerData[i].PlayerType,
+          PlayerPosition:this.PlayerData[i].PlayerPosition,
+          PlayerTeam:this.PlayerData[i].PlayerTeam
+        }  
+        console.log("player found in table:" + JSON.stringify(pl));      
+      }       
+    }
+    this.playerService.SetPlayer(pl,pIndex);
+
+    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'30%'});
+
+    // this.plDialog.playerForm.patchValue({
+    //   playerName:pName,
+    //   playerType:pType,
+    //   playerPosition:pPosition,
+    //   playerTeam:pTeam
+    // });
+
+    //PlayerDialogComponent objPl=new PlayerDialogComponent()
+    
+  }
+
   
   displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];
   
   dataSource: MatTableDataSource<Player>;
-
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-
 }
 
-export interface Player
-{
-  PlayerName:string;
-  PlayerType:string;
-  PlayerPosition:number;
-  PlayerTeam:string;
-}
+// export interface Player
+// {
+//   PlayerName:string;
+//   PlayerType:string;
+//   PlayerPosition:number;
+//   PlayerTeam:string;
+// }

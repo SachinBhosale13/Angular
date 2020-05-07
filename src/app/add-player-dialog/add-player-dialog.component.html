@@ -52,7 +52,8 @@
 
 <mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close><mat-icon>clear</mat-icon> Cancel</button>
-  <button mat-flat-button color="primary" type="submit" (click)="AddThisPlayer()" [disabled]="!playerForm.valid" cdkFocusInitial><mat-icon>add</mat-icon> Add</button>  
+  <button mat-flat-button color="primary" type="submit" (click)="AddThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>add</mat-icon> Add</button>  
+  <!-- cdkFocusInitial -->
 </mat-dialog-actions>
 
 </form>
