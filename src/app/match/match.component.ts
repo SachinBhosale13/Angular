@@ -86,6 +86,13 @@ export class MatchComponent implements OnInit {
     }
   }
 
+  ClockIcon_Click()
+  {
+    let element : HTMLElement = document.getElementsByClassName('clStartTime')[0] as HTMLElement;
+    console.log(element);
+    element.click();
+  }
+
   openDialog()
   {
     // console.log("TeamOne: "+this.matchForm.controls['teamOne'].value);

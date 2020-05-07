@@ -70,14 +70,12 @@
             <div class="control-container">
                 <mat-form-field class="control-full-width">
                     <mat-label>Start Time* (24 hours)</mat-label>
-                    <input matInput formControlName="startTime" [ngxTimepicker]="toggleTimepicker"  readonly [format]="24" placeholder="HH:MM(24 hours)" id="startTime" name="startTime">
+                    <input matInput formControlName="startTime" [ngxTimepicker]="toggleTimepicker"  readonly [format]="24" placeholder="HH:MM(24 hours)" id="startTime" class="clStartTime" name="startTime">                    
                     
-                    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>           
-                    <!-- <button type="button" matSuffix mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>schedule</mat-icon>
-                      </button> -->
-                    
-                    <ngx-material-timepicker #toggleTimepicker [theme]="darkTheme"></ngx-material-timepicker>
+                    <button type="button" (click)="ClockIcon_Click()" matSuffix mat-icon-button > <mat-icon >schedule</mat-icon> </button>
+                        
+                    <!-- <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>            -->
+                    <ngx-material-timepicker  #toggleTimepicker [theme]="darkTheme"></ngx-material-timepicker>
                     <!-- <ngx-material-timepicker #fullTime></ngx-material-timepicker> -->
                     <mat-error *ngIf="hasError('startTime','required')">this field is required</mat-error>
                 </mat-form-field>
@@ -98,8 +96,9 @@
 
         <mat-grid-tile>
             <div class="control-container">                
-                <button type="submit" (click)="openDialog()" class="control-full-width" mat-flat-button color="primary"><mat-icon>add_circle_outline</mat-icon>  Add Players</button>
-                <!-- [disabled]="!matchForm.valid" -->            
+                <button type="submit" (click)="openDialog()" class="control-full-width" mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Add Players</button>
+                <!-- [disabled]="!matchForm.valid" -->   
+                <!-- add_circle_outline  -->
             </div>
         </mat-grid-tile>
     </mat-grid-list> 

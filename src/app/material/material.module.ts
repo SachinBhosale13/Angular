@@ -26,7 +26,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     Material.MatSortModule,
     NgxMaterialTimepickerModule,
     Material.MatIconModule,
-    Material.MatDividerModule
+    Material.MatDividerModule,
+    Material.MatTooltipModule
       
   ],
   exports:
@@ -49,7 +50,8 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     Material.MatSortModule,
     NgxMaterialTimepickerModule,
     Material.MatIconModule,
-    Material.MatDividerModule
+    Material.MatDividerModule,
+    Material.MatTooltipModule    
     
   ],
   providers:[{provide:MAT_DATE_LOCALE,useValue:'en-GB'}]

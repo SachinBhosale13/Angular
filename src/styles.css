@@ -8,6 +8,11 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
+.matIconForModal
+{
+    font-size: 32px;
+    margin-right: 16px;
+}
 
 div.container
 {

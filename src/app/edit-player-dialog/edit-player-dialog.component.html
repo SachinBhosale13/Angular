@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Edit Player</h1>
+<mat-icon class="matIconForModal" style="float: left;">create</mat-icon><h1 mat-dialog-title>Edit Player <button color="warn" mat-mini-fab style="float: right;"  mat-dialog-close><mat-icon>clear</mat-icon></button></h1>
 <form [formGroup]="playerForm">
 <mat-dialog-content>
     <mat-grid-list cols="1" rowHeight="65">
@@ -52,7 +52,7 @@
 
 <mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close><mat-icon>clear</mat-icon> Cancel</button>
-  <button mat-flat-button color="primary" type="submit" (click)="UpdateThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>add</mat-icon> update</button>  
+  <button mat-flat-button color="primary" type="submit" (click)="UpdateThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>done</mat-icon> update</button>  
   <!-- cdkFocusInitial -->
 </mat-dialog-actions>
 
