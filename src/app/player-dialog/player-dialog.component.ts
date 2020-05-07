@@ -13,9 +13,13 @@ export class PlayerDialogComponent implements OnInit {
   public playerForm:FormGroup;
   public player:Player;
   public teamsArr:string[]=[];
+  //public SelectedTeamsIndx:number[]=[];
 
   constructor(private playerService:PlayerDataService) {
-    this.teamsArr=this.playerService.teamsArr;
+    this.teamsArr = [];
+    this.teamsArr = this.playerService.SelectedTeams;
+
+    console.log("Teams in modal: "+this.teamsArr);
    }
 
   ngOnInit() {
@@ -23,7 +27,7 @@ export class PlayerDialogComponent implements OnInit {
     ({
         playerName:new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(50),CustomValidators.alphabetOnly]),
         playerType:new FormControl('',[Validators.required]),
-        playerPosition:new FormControl('',[Validators.required,Validators.maxLength(2)]),
+        playerPosition:new FormControl('',[Validators.required,Validators.maxLength(2),Validators.pattern("^([1-9]|1[01])")]),
         playerTeam:new FormControl('',[Validators.required,Validators.maxLength(25)])
     });
   }

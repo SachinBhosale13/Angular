@@ -3,8 +3,9 @@
         <span class="title-center">Match Form</span>
         <span class="fill-remaining-space"></span>
     </mat-toolbar>     -->
-    Match Details
-
+    <mat-icon style="float: left;">sports_cricket</mat-icon><div style="text-align:center;">Match Details<mat-icon style="float: right;">sports_cricket</mat-icon></div>
+    <br>
+    <mat-divider></mat-divider>
     <form [formGroup] = "matchForm">   
     <mat-grid-list cols="4" rowHeight="72">
         <mat-grid-tile>
@@ -36,7 +37,7 @@
                 <mat-form-field class="control-full-width">
                     <mat-label>Team One*</mat-label>
                     <mat-select formControlName="teamOne" id="teamOne" (selectionChange)="onTeamChanged('teamOne',$event.value)" name="teamOne">
-                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==indx" [value]="t">{{t}}</mat-option>                      
+                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx" [value]="t">{{t}}</mat-option>                      
                     </mat-select>
                     <mat-error *ngIf="hasError('teamOne','required')">this field is required</mat-error>
 
@@ -52,8 +53,8 @@
             <div class="control-container">
                 <mat-form-field class="control-full-width">
                     <mat-label>Team Two*</mat-label>
-                    <mat-select class="teams" formControlName="teamTwo" id="teamTwo" name="teamTwo">
-                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==indx" [value]="t">{{t}}</mat-option>                      
+                    <mat-select formControlName="teamTwo" id="teamTwo" (selectionChange)="onTeamChanged('teamTwo',$event.value)" name="teamTwo">
+                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx" [value]="t">{{t}}</mat-option>                      
                     </mat-select>
                     <mat-error *ngIf="hasError('teamTwo','required')">this field is required</mat-error>
                     <!-- <input matInput formControlName="teamTwo" id="teamTwo" name="teamTwo">
@@ -68,9 +69,14 @@
         <mat-grid-tile>
             <div class="control-container">
                 <mat-form-field class="control-full-width">
-                    <mat-label>Start Time*</mat-label>
+                    <mat-label>Start Time* (24 hours)</mat-label>
                     <input matInput formControlName="startTime" [ngxTimepicker]="toggleTimepicker"  readonly [format]="24" placeholder="HH:MM(24 hours)" id="startTime" name="startTime">
-                    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+                    
+                    <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>           
+                    <!-- <button type="button" matSuffix mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                        <mat-icon>schedule</mat-icon>
+                      </button> -->
+                    
                     <ngx-material-timepicker #toggleTimepicker [theme]="darkTheme"></ngx-material-timepicker>
                     <!-- <ngx-material-timepicker #fullTime></ngx-material-timepicker> -->
                     <mat-error *ngIf="hasError('startTime','required')">this field is required</mat-error>
@@ -80,8 +86,9 @@
         <mat-grid-tile [colspan] = "2">
             <div class="addr-control-container">
                 <mat-form-field class="control-full-width">
-                    <mat-label>Match Address*</mat-label>
+                    <mat-label>Match Address*    <mat-icon matSuffix>location_on</mat-icon></mat-label>
                     <input matInput formControlName="mAddress" id="mAddress" name="mAddress">
+                    
                     <mat-error *ngIf="hasError('mAddress','required')">this field is required</mat-error>
                     <mat-error *ngIf="hasError('mAddress','minlength')">minimum 5 characters are mandatory</mat-error>
                     <mat-error *ngIf="hasError('mAddress','maxlength')">maximum 70 characters are allowed</mat-error>
@@ -91,7 +98,7 @@
 
         <mat-grid-tile>
             <div class="control-container">                
-                <button type="submit" (click)="openDialog()"  class="control-full-width" mat-flat-button color="primary">Add Players</button>
+                <button type="submit" (click)="openDialog()" class="control-full-width" mat-flat-button color="primary"><mat-icon>add_circle_outline</mat-icon>  Add Players</button>
                 <!-- [disabled]="!matchForm.valid" -->            
             </div>
         </mat-grid-tile>
@@ -101,7 +108,7 @@
 
     <player-table></player-table>
 
-    <button type="button" (click)="submitMatchDetails()" [disabled]="(!matchForm.valid) || (isAllPlayers==false)" class="btnSubmitMatch" mat-raised-button color="primary">Submit Match Details</button>
+    <button type="button" (click)="submitMatchDetails()" [disabled]="(!matchForm.valid) || (isAllPlayers==false)" class="btnSubmitMatch" mat-raised-button color="primary"><mat-icon>done_outline</mat-icon> Submit Match Details</button>
 
 
 

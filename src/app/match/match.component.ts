@@ -5,6 +5,7 @@ import {FormControl,FormGroup,Validators} from '@angular/forms';
 import {PlayerDataService} from '../services/player-data.service'
 import { stringify } from 'querystring';
 import {CustomValidators} from '../Shared/validator';
+import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 
 @Component({
   selector: 'Match',
@@ -19,6 +20,23 @@ export class MatchComponent implements OnInit {
   public indx:number;
   //public teams:string[]=['Afghanistan','Australia','Bangladesh','England','India','Ireland','New Zealand','Pakistan','South Africa','Sri Lanka','West Indies','Zimbabwe'];
   public teamsArr:string[]=[];
+  public t1Indx:number;
+  public t2Indx:number; 
+  darkTheme: NgxMaterialTimepickerTheme = {
+    container: {
+        bodyBackgroundColor: '#424242', //#424242
+        buttonColor: '#fff'
+    },
+    dial: {
+        dialBackgroundColor: '#555',
+    },
+    clockFace: {
+        clockFaceBackgroundColor: '#555',
+        clockHandColor: '#c2175b', //#9fbd90
+        clockFaceTimeInactiveColor: '#fff'
+    }
+}; 
+
 
   constructor(public dialog:MatDialog,public playerService:PlayerDataService) {
     this.teamsArr = this.playerService.teamsArr;
@@ -52,28 +70,34 @@ export class MatchComponent implements OnInit {
   }
 
   onTeamChanged(id:string,value:string)
-  {
-    
+  {    
     console.log(id+":"+value);
-    
 
     if(id == 'teamOne')
     {
-      this.indx = this.teamsArr.indexOf(value);
-      console.log("Index:"+this.indx);
+      this.t1Indx = this.teamsArr.indexOf(value);      
+      console.log("t1 Index:"+this.t1Indx);
     }
-    // console.log(e); 
-    // console.log(e.target.id);    
-    // console.log(e.value);
-    //console.log(id+ ":" + value);
+    else if(id == 'teamTwo')
+    {
+      this.t2Indx = this.teamsArr.indexOf(value);      
+      console.log("t2 Index:"+this.t2Indx);
+    }
   }
 
   openDialog()
   {
     console.log("TeamOne: "+this.matchForm.controls['teamOne'].value);
     console.log("TeamTwo: "+this.matchForm.controls['teamTwo'].value);
+
+    let t1Val = this.matchForm.controls['teamOne'].value;
+    let t2Val = this.matchForm.controls['teamTwo'].value;  
+    
+    this.playerService.PushSelectedTeams(t1Val,t2Val);
+    
     this.dialog.open(PlayerDialogComponent,{height:'69%',width:'30%'});
   }
+
 
   public submitMatchDetails()
   {

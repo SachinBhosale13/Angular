@@ -13,6 +13,7 @@ export class PlayerDataService {
   public request:RequestData;
   public response:ResponseData;
   public teamsArr:string[] = teams;
+  public SelectedTeams:string[]=[];
   
   constructor(private http:HttpClient) {}
 
@@ -21,6 +22,16 @@ export class PlayerDataService {
     console.log("Match Data in service:"+JSON.stringify(pl));
     this.playerData.push(pl);
     this.noOfPlayers += 1;    
+  }
+
+  public PushSelectedTeams(t1Val:string,t2Val:string)
+  {
+    if((t1Val != null || t1Val != "" || t1Val != undefined) && (t2Val != null || t2Val != "" || t2Val != undefined) )
+    {
+      this.SelectedTeams = [];
+      this.SelectedTeams.push(t1Val,t2Val);
+      console.log("Selected teams in service:"+ this.SelectedTeams);
+    }
   }
 
   public SubmitMatchDetails(matchData:Match):Observable<any>

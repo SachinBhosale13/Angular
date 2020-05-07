@@ -24,7 +24,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     Material.MatCardModule,
     Material.MatNativeDateModule,
     Material.MatSortModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    Material.MatIconModule,
+    Material.MatDividerModule
       
   ],
   exports:
@@ -45,7 +47,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     Material.MatCardModule,
     Material.MatNativeDateModule,
     Material.MatSortModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    Material.MatIconModule,
+    Material.MatDividerModule
     
   ],
   providers:[{provide:MAT_DATE_LOCALE,useValue:'en-GB'}]

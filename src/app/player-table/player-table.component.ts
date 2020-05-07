@@ -10,8 +10,7 @@ import {PlayerDataService} from '../services/player-data.service';
   styleUrls: ['./player-table.component.css']
 })
 export class PlayerTableComponent implements OnInit {
-  public PlayerData:Player[] = [];
-  
+  public PlayerData:Player[] = [];  
 
   constructor(private playerService:PlayerDataService) {  }
 
@@ -41,7 +40,7 @@ export class PlayerTableComponent implements OnInit {
   }
 
   
-  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam'];
+  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];
   
   dataSource: MatTableDataSource<Player>;
 
