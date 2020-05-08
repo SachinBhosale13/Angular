@@ -17,7 +17,7 @@ export class PlayerDataService {
   public pIndx:number;
   public noOfPlayers:number=0;
   public request:RequestData;
-  public response:ResponseData;
+  // public response:ResponseData;
   public teamsArr:string[] = teams;
   public SelectedTeams:string[]=[];
   
@@ -69,10 +69,10 @@ export class PlayerDataService {
     }
   }
 
-  public UpdateResponseData(resp:ResponseData)
-  {
-      this.response = resp;
-  }
+  // public UpdateResponseData(resp:ResponseData)
+  // {
+  //     this.response = resp;
+  // }
 
   public SubmitMatchDetails(matchData:Match):Observable<any>
   {
@@ -98,7 +98,7 @@ export class PlayerDataService {
     });
     let options = { headers: headers };
 
-    this.response = null;
+    // this.response = null;
     return this.http.post<ResponseData>('http://localhost:51456/api/SubmitMatchData',this.request,options);
   }
 }

@@ -90,7 +90,7 @@ export class MatchComponent implements OnInit {
   ClockIcon_Click()
   {
     let element : HTMLElement = document.getElementsByClassName('clStartTime')[0] as HTMLElement;
-    console.log(element);
+    //console.log(element);
     element.click();
   }
 
@@ -105,17 +105,33 @@ export class MatchComponent implements OnInit {
     this.playerService.PushSelectedTeams(t1Val,t2Val);
     
     
-    this.dialog.open(AddPlayerDialogComponent,{height:'69%',width:'30%'});
+    this.dialog.open(AddPlayerDialogComponent,{height:'69%',width:'26%'});
   }
 
 
   public submitMatchDetails()
   {
-    let dt=new Date(this.matchForm.get('matchDate').value);
-    //console.log(dt);
+    let dt=new Date(this.matchForm.get('matchDate').value);    
     let mo = dt.getMonth() + 1;
-    let mDate= dt.getDate() + "/" + mo + "/" + dt.getFullYear();
-    //console.log(mDate);
+    let mDate= dt.getDate() + "/" + mo + "/" + dt.getFullYear();    
+    let sTime :number;
+    let startTime:string;
+    let sTimeArr = this.matchForm.get('startTime').value.split(' ',2);    
+    let sTimeAmPm = sTimeArr[1];    
+
+    let sTimeHrs = parseInt(sTimeArr[0].split(':',2)[0]);    
+
+    if(sTimeAmPm == "AM")
+    {
+      sTime = parseInt(sTimeArr[0]);
+    }
+    else if(sTimeAmPm == "PM")
+    {
+      sTime = parseInt(sTimeArr[0])+12;
+    }
+    
+    startTime = sTime + ":" + sTimeArr[0].split(':',2)[1];
+    
 
     this.matchData =
     {
@@ -123,15 +139,15 @@ export class MatchComponent implements OnInit {
       matchDate:mDate,
       teamOne : this.matchForm.get('teamOne').value,
       teamTwo : this.matchForm.get('teamTwo').value,
-      startTime : this.matchForm.get('startTime').value,
+      startTime : startTime,
       mAddress : this.matchForm.get('mAddress').value
     }
 
     this.playerService.SubmitMatchDetails(this.matchData).subscribe(
       res=> {
-      this.playerService.UpdateResponseData(res),
+      //this.playerService.UpdateResponseData(res),
       console.log("Response in subscribe: "+JSON.stringify(res));
-      this.dialog.open(ApiResponseDialogComponent,{height:'33%',width:'30%'})
+      this.dialog.open(ApiResponseDialogComponent,{data:{res},height:'35%',width:'32%'})
       });
   }
 }

@@ -69,9 +69,9 @@
         <mat-grid-tile>
             <div class="control-container">
                 <mat-form-field class="control-full-width">
-                    <mat-label>Start Time* (24 hours)</mat-label>
-                    <input matInput formControlName="startTime" [ngxTimepicker]="toggleTimepicker"  readonly [format]="24" placeholder="HH:MM(24 hours)" id="startTime" class="clStartTime" name="startTime">                    
-                    
+                    <mat-label>Start Time*</mat-label>
+                    <input matInput formControlName="startTime" [ngxTimepicker]="toggleTimepicker"  readonly  placeholder="HH:MM AM/PM" id="startTime" class="clStartTime" name="startTime">                    
+                    <!-- [format]="24" -->
                     <button type="button" (click)="ClockIcon_Click()" matSuffix mat-icon-button > <mat-icon >schedule</mat-icon> </button>
                         
                     <!-- <ngx-material-timepicker-toggle matSuffix [for]="toggleTimepicker"></ngx-material-timepicker-toggle>            -->
