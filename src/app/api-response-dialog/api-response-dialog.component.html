@@ -1,0 +1,14 @@
+<h1 style="background-color: green;" *ngIf="response.IsValid && response.status" mat-dialog-title >SUCCESS</h1>
+<h1 style="background-color: red;" *ngIf="response.IsValid==false || response.status==false" mat-dialog-title >FAILURE</h1>
+<div *ngIf="response.IsValid && response.status" style="text-align: center;" mat-dialog-content>
+  <p>{{response.ResponseMessage}}.</p>  
+</div>
+<div *ngIf="!response.IsValid" style="text-align: center;" mat-dialog-content>
+    <p>Validation Error occured.</p>  
+  </div>
+<div *ngIf="!(response.status)" style="text-align: center;" mat-dialog-content>
+    <p>{{response.error}}.</p>  
+  </div>
+<div style="text-align: center;" mat-dialog-actions>  
+  <button  mat-raised-button color="primary" mat-dialog-close cdkFocusInitial>OK</button>
+</div>

@@ -12,6 +12,7 @@ import { AddPlayerDialogComponent } from './add-player-dialog/add-player-dialog.
 import { PlayerTableComponent } from './player-table/player-table.component';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dialog.component';
+import { ApiResponseDialogComponent } from './api-response-dialog/api-response-dialog.component';
 
 
 
@@ -21,9 +22,10 @@ import { EditPlayerDialogComponent } from './edit-player-dialog/edit-player-dial
     MatchComponent,
     AddPlayerDialogComponent,
     PlayerTableComponent,
-    EditPlayerDialogComponent
+    EditPlayerDialogComponent,
+    ApiResponseDialogComponent
   ],
-  entryComponents:[AddPlayerDialogComponent,EditPlayerDialogComponent],
+  entryComponents:[AddPlayerDialogComponent,EditPlayerDialogComponent,ApiResponseDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

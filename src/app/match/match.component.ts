@@ -7,6 +7,7 @@ import { stringify } from 'querystring';
 import {CustomValidators} from '../Shared/validator';
 import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import {Match} from '../Shared/Match';
+import { ApiResponseDialogComponent } from '../api-response-dialog/api-response-dialog.component';
 
 @Component({
   selector: 'Match',
@@ -111,10 +112,10 @@ export class MatchComponent implements OnInit {
   public submitMatchDetails()
   {
     let dt=new Date(this.matchForm.get('matchDate').value);
-    console.log(dt);
+    //console.log(dt);
     let mo = dt.getMonth() + 1;
     let mDate= dt.getDate() + "/" + mo + "/" + dt.getFullYear();
-    console.log(mDate);
+    //console.log(mDate);
 
     this.matchData =
     {
@@ -126,20 +127,12 @@ export class MatchComponent implements OnInit {
       mAddress : this.matchForm.get('mAddress').value
     }
 
-    this.playerService.SubmitMatchDetails(this.matchData).subscribe(res=>console.log(res));
+    this.playerService.SubmitMatchDetails(this.matchData).subscribe(
+      res=> {
+      this.playerService.UpdateResponseData(res),
+      console.log("Response in subscribe: "+JSON.stringify(res));
+      this.dialog.open(ApiResponseDialogComponent,{height:'33%',width:'30%'})
+      });
   }
-
 }
-
-
-
-// export interface Match
-// {
-//   matchName:string;
-//   matchDate:string;
-//   teamOne:string;
-//   teamTwo:string;
-//   startTime:string;
-//   mAddress:string;
-// }
 

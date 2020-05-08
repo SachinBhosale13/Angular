@@ -4,7 +4,8 @@ import {Observable,throwError} from 'rxjs';
 import {catchError,retry} from 'rxjs/operators';
 import {Player} from '../Shared/Player';
 import {Match} from '../Shared/Match';
-
+import{ResponseData} from '../Shared/ResponseData';
+import{RequestData} from '../Shared/RequestData';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,11 @@ export class PlayerDataService {
     }
   }
 
+  public UpdateResponseData(resp:ResponseData)
+  {
+      this.response = resp;
+  }
+
   public SubmitMatchDetails(matchData:Match):Observable<any>
   {
     console.log("Service function called with param:" + JSON.stringify(matchData));
@@ -92,46 +98,13 @@ export class PlayerDataService {
     });
     let options = { headers: headers };
 
-    return this.http.post<any>('http://localhost:51456/api/SubmitMatchData',this.request,options);
+    this.response = null;
+    return this.http.post<ResponseData>('http://localhost:51456/api/SubmitMatchData',this.request,options);
   }
 }
 
 const teams=['Afghanistan','Australia','Bangladesh','England','India','Ireland','New Zealand','Pakistan','South Africa','Sri Lanka','West Indies','Zimbabwe'];
 
 
-export interface RequestData
-{
-  MatchName:string;
-  MatchDate:string;
-  TeamOne:string;
-  TeamTwo:string;
-  StartTime:string;
-  MatchAddress:string;
-  lstPlayers:Player[]
-}
 
-// export interface Match
-// {
-//   matchName:string;
-//   matchDate:string;
-//   teamOne:string;
-//   teamTwo:string;
-//   startTime:string;
-//   mAddress:string;
-// }
 
-// export interface Player
-// {
-//   PlayerName:string;
-//   PlayerType:string;
-//   PlayerPosition:number;
-//   PlayerTeam:string;
-// }
-
-export interface ResponseData
-{
-  IsValid:boolean;
-  error:string;
-  status:boolean;
-  ResponseMessage:string;
-}
