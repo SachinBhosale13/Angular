@@ -40,7 +40,6 @@
                         <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx" [value]="t">{{t}}</mat-option>                      
                     </mat-select>
                     <mat-error *ngIf="hasError('teamOne','required')">this field is required</mat-error>
-
                     <!-- <input matInput formControlName="teamOne" id="teamOne" name="teamOne">
                     <mat-error *ngIf="hasError('teamOne','required')">this field is required</mat-error>
                     <mat-error *ngIf="hasError('teamOne','minlength')">minimum 2 characters are mandatory</mat-error>
