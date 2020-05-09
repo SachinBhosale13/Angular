@@ -8,6 +8,7 @@ import {CustomValidators} from '../Shared/validator';
 import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import {Match} from '../Shared/Match';
 import { ApiResponseDialogComponent } from '../api-response-dialog/api-response-dialog.component';
+import { error } from 'util';
 
 @Component({
   selector: 'Match',
@@ -94,7 +95,7 @@ export class MatchComponent implements OnInit {
     element.click();
   }
 
-  openDialog()
+  addPlayer()
   {
     // console.log("TeamOne: "+this.matchForm.controls['teamOne'].value);
     // console.log("TeamTwo: "+this.matchForm.controls['teamTwo'].value);
@@ -148,7 +149,12 @@ export class MatchComponent implements OnInit {
       //this.playerService.UpdateResponseData(res),
       console.log("Response in subscribe: "+JSON.stringify(res));
       this.dialog.open(ApiResponseDialogComponent,{data:{res},height:'35%',width:'32%'})
-      });
+      },
+      error=>{
+        console.log("Internal server error:" + error);
+        this.dialog.open(ApiResponseDialogComponent,{data:error,height:'35%',width:'32%'})
+      }
+      );
   }
 }
 

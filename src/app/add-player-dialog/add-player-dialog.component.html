@@ -38,7 +38,7 @@
             <mat-form-field class="control-full-width">
                 <mat-label>Player Team*</mat-label>
                 <mat-select class="teams" formControlName="playerTeam" id="playerTeam" name="playerTeam">
-                    <mat-option *ngFor="let t of teamsArr;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
+                    <mat-option *ngFor="let t of SelectedTeams;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
                 </mat-select>
                 <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
 

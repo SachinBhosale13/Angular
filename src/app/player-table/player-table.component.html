@@ -1,10 +1,16 @@
 <mat-grid-list cols="4" rowHeight="72">
-    <mat-grid-tile>
+    <mat-grid-tile style="float: left;">
         <mat-form-field class="Search-Player-Control">          
         <mat-label><mat-icon id="SearchIcon" style="float: left;">search</mat-icon>Search Table</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name of the player, type etc.">
         
         </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile  style="color: yellowgreen;">
+      <mat-icon *ngIf="showTeamPlayers" style="margin-right:4pt">people</mat-icon>
+      <span *ngIf="showTeamPlayers"><p> Count- {{teamOne}}: {{teamOnePlayers}}, {{teamTwo}}: {{teamTwoPlayers}}</p> </span>
     </mat-grid-tile>
 </mat-grid-list>
 

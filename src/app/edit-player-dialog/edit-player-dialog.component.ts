@@ -12,14 +12,13 @@ import {Player} from '../Shared/Player';
 export class EditPlayerDialogComponent implements OnInit {
   public playerForm:FormGroup;
   public player:Player;
-  public teamsArr:string[]=[];
+  public SelectedTeams:string[]=[];
   public pIndx:number;
 
   //public SelectedTeamsIndx:number[]=[];
 
   constructor(private playerService:PlayerDataService) {
-    this.teamsArr = [];
-    this.teamsArr = this.playerService.SelectedTeams;
+    
     this.player = this.playerService.editedPlayer;
    }
 
@@ -30,6 +29,10 @@ export class EditPlayerDialogComponent implements OnInit {
         playerType:new FormControl(this.player.PlayerType,[Validators.required]),
         playerPosition:new FormControl(this.player.PlayerPosition,[Validators.required,Validators.maxLength(2),Validators.pattern("^([1-9]|1[01])")]),
         playerTeam:new FormControl(this.player.PlayerTeam,[Validators.required,Validators.maxLength(25)])
+    });
+
+    this.playerService.obsSelectedTeams.subscribe(result=>{
+      this.SelectedTeams = result
     });
   }
 

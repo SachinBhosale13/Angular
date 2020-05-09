@@ -8,24 +8,33 @@ import{ResponseData} from '../Shared/ResponseData';
 import{RequestData} from '../Shared/RequestData';
 import {BehaviorSubject} from 'rxjs';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { ArrayDataSource } from '@angular/cdk/collections';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlayerDataService {
-  public matchData:Match;
+export class PlayerDataService {  
   private baseUrl:string = "http://localhost:51456/";
-  // public playerData:Player[]=[];
-  public playerData : BehaviorSubject<Array<Player>> = new BehaviorSubject([]);
-  plDataObserved = this.playerData.asObservable();
-
+  public matchData:Match;
   public editedPlayer:Player;
   public pIndx:number;
   public noOfPlayers:number=0;
-  public request:RequestData;
-  // public response:ResponseData;
+  public request:RequestData;  
   public teamsArr:string[] = teams;
-  public SelectedTeams:string[]=[];
+  // public playerData:Player[]=[];
+
+  public playerData : BehaviorSubject<Array<Player>> = new BehaviorSubject([]);
+  obsPlayerData = this.playerData.asObservable();
+
+  public SelectedTeams:BehaviorSubject<Array<string>> = new BehaviorSubject([]);
+  obsSelectedTeams = this.SelectedTeams.asObservable();
+
+  public teamPlayersNo:BehaviorSubject<Array<number>>=new BehaviorSubject([0,0]);
+  obsTeamPlayersNo = this.teamPlayersNo.asObservable();
+
+  
+  //public SelectedTeams:string[]=[];
+  // public response:ResponseData;
   
   constructor(private http:HttpClient) {}
 
@@ -35,16 +44,67 @@ export class PlayerDataService {
     const updatedArr = [...currentArr,pl] //updating it with more
 
     this.playerData.next(updatedArr); // Reassiging updated value
+
+    const currentSelectedTeams= this.SelectedTeams.value;
+
+    // for(let i=0;i<updatedArr.length;i++)
+    // {
+      console.log("Add Player");
+      // console.log(updatedArr);
+      // console.log(updatedArr[i].PlayerTeam);
+      // console.log(currentSelectedTeams[0]);
+      // console.log(currentSelectedTeams[1]);
+
+      console.log(this.teamPlayersNo.value);
+
+      const currentTeamPlayers = this.teamPlayersNo.value;
+      let updatedTeamPlayers = [0,0];
+      console.log(currentTeamPlayers);
+      console.log("t1: "+currentTeamPlayers[0]+",t2: "+currentTeamPlayers[1]);
+      let t1Players= currentTeamPlayers[0];
+      let t2Players= currentTeamPlayers[1];
+      console.log("t1Players: "+t1Players+",t2Players: "+t2Players);
+
+      if(pl.PlayerTeam == currentSelectedTeams[0])
+      {  
+        console.log("if1") ;    
+        t1Players = t1Players + 1;     
+        //console.log(currentSelectedTeams[0] + ": "+ t1Players);   
+      }
+      if(pl.PlayerTeam == currentSelectedTeams[1])
+      {           
+        console.log("if2") ;   
+        t2Players = t2Players + 1;
+        //console.log(currentSelectedTeams[1] + ": "+ t2Players);
+      }
+      updatedTeamPlayers = [t1Players,t2Players];
+
+      this.teamPlayersNo.next(updatedTeamPlayers);   
+      
+      //console.log(this.teamPlayersNo);
+
+    // }
+
     this.noOfPlayers += 1; 
   }
 
   public UpdatePlayer(pl:Player)
   {
     const currentArr = this.playerData.value;
+    let originPl = currentArr[this.pIndx];
 
     currentArr.splice(this.pIndx,1,pl);
+    this.playerData.next(currentArr);    
 
-    this.playerData.next(currentArr);
+    const updatedArr = this.playerData.value;
+
+    let updatedPl = updatedArr[this.pIndx];
+    if(originPl.PlayerTeam != updatedPl.PlayerTeam)
+    {
+      const currentTeamPlayers = this.teamPlayersNo.value;
+      //TODO
+    }
+
     console.log("Array after editing: " + JSON.stringify(this.playerData));
   }
 
@@ -80,8 +140,10 @@ export class PlayerDataService {
   {
     if((t1Val != null || t1Val != "" || t1Val != undefined) && (t2Val != null || t2Val != "" || t2Val != undefined) )
     {
-      this.SelectedTeams = [];
-      this.SelectedTeams.push(t1Val,t2Val);
+      let newArr = [t1Val,t2Val];
+      this.SelectedTeams.next(newArr)
+      //this.SelectedTeams = [];
+      //this.SelectedTeams.push(t1Val,t2Val);
       //console.log("Selected teams in service:"+ this.SelectedTeams);
     }
   }

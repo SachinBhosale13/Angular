@@ -13,7 +13,7 @@ import {Player} from '../Shared/Player';
 export class AddPlayerDialogComponent implements OnInit {
   public playerForm:FormGroup;
   public player:Player;
-  public teamsArr:string[]=[];
+  public SelectedTeams:string[]=[];
   //public SelectedTeamsIndx:number[]=[];
 
   constructor(private playerService:PlayerDataService) { }
@@ -27,8 +27,9 @@ export class AddPlayerDialogComponent implements OnInit {
         playerTeam:new FormControl('',[Validators.required,Validators.maxLength(25)])
     });
 
-    this.teamsArr = [];
-    this.teamsArr = this.playerService.SelectedTeams;
+    this.SelectedTeams = [];
+    this.playerService.obsSelectedTeams.subscribe(result=> {this.SelectedTeams = result});
+    //this.SelectedTeams = this.playerService.SelectedTeams;
 
     //console.log("Teams in modal: "+this.teamsArr);
   }

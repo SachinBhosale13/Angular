@@ -16,25 +16,55 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['./player-table.component.css']
 })
 export class PlayerTableComponent implements OnInit {
-  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];
-    
+  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];    
   dataSource: MatTableDataSource<Player>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  public PlayerData:Player[] = [];    
+
+  public PlayerData:Player[] = [];
+  public teamPlayers:TeamPlayers[];
+  public teamOne :string;
+  public teamTwo:string;
+  public teamOnePlayers:number;
+  public teamTwoPlayers:number;
+  public showTeamPlayers:boolean;
 
   constructor(private playerService:PlayerDataService,private dialog:MatDialog) {}
 
   ngOnInit() {   
     // console.log("hi");
-    this.playerService.plDataObserved.subscribe(resp => {
-      this.PlayerData = resp,
-      console.log("Observable data" + JSON.stringify(resp)),
+    this.playerService.obsPlayerData.subscribe(result => {
+      this.PlayerData = result,
+      console.log("Observable data" + JSON.stringify(result)),
       console.log("Player data:" + JSON.stringify(this.PlayerData)),
-      this.dataSource = new MatTableDataSource(this.PlayerData),
-       this.dataSource.paginator = this.paginator,
-     this.dataSource.sort = this.sort
+      this.dataSource = new MatTableDataSource(this.PlayerData),      
+      this.dataSource.paginator = this.paginator,
+      this.dataSource.sort = this.sort
     });
+    this.playerService.obsSelectedTeams.subscribe(result => {
+      this.teamOne = result[0];
+      console.log(this.teamOne);
+      this.teamTwo = result[1];
+      console.log(this.teamTwo);
+      //this.teamOne = result.splice(1,1).toString();
+    });
+
+    this.playerService.obsTeamPlayersNo.subscribe(result =>{
+      this.teamOnePlayers = result[0];
+      this.teamTwoPlayers = result[1];
+      if(this.teamOnePlayers > 0 ||  this.teamTwoPlayers > 0)
+      {
+          this.showTeamPlayers = true;
+          console.log(this.showTeamPlayers);
+      }
+      else
+      {
+        this.showTeamPlayers = false;
+        console.log(this.showTeamPlayers);
+      }
+      //console.log(this.teamOnePlayers+","+this.teamTwoPlayers);
+    });
+    //this.teamOnePlayers = this.PlayerData.
   }
 
   // ngAfterContentChecked()
@@ -82,7 +112,7 @@ export class PlayerTableComponent implements OnInit {
     }
     this.playerService.SetPlayer(pl,pIndex);
 
-    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'30%'});
+    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'26%'});
 
     // this.plDialog.playerForm.patchValue({
     //   playerName:pName,
@@ -94,25 +124,23 @@ export class PlayerTableComponent implements OnInit {
     //PlayerDialogComponent objPl=new PlayerDialogComponent()
     
   }
+}
 
-  
-  
+export interface TeamPlayers
+{
+  teamName:string;
+  noOfPlayers:number;
 }
 
 
-const PlayerData:Player[] = [
-  {  PlayerName:'Virat Kohli',PlayerType:'Batsman',PlayerPosition:2,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
-  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' }
-]
-// export interface Player
-// {
-//   PlayerName:string;
-//   PlayerType:string;
-//   PlayerPosition:number;
-//   PlayerTeam:string;
-// }
+// const PlayerData:Player[] = [
+//   {  PlayerName:'Virat Kohli',PlayerType:'Batsman',PlayerPosition:2,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+//   {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' }
+// ]
+
+
