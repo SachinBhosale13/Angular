@@ -7,6 +7,7 @@ import {Player} from '../Shared/Player';
 import { MatDialog } from '@angular/material';
 //import {AddPlayerDialogComponent} from '../add-player-dialog/add-player-dialog.component';
 import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dialog.component';
+import {BehaviorSubject} from 'rxjs';
 
 
 @Component({
@@ -15,28 +16,36 @@ import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dia
   styleUrls: ['./player-table.component.css']
 })
 export class PlayerTableComponent implements OnInit {
+  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];
+    
+  dataSource: MatTableDataSource<Player>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  public PlayerData:Player[] = [];  
+  public PlayerData:Player[] = [];    
 
-  constructor(private playerService:PlayerDataService,private dialog:MatDialog) { }
+  constructor(private playerService:PlayerDataService,private dialog:MatDialog) {}
 
   ngOnInit() {   
-    
-    this.dataSource = new MatTableDataSource(this.PlayerData); 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // console.log("hi");
+    this.playerService.plDataObserved.subscribe(resp => {
+      this.PlayerData = resp,
+      console.log("Observable data" + JSON.stringify(resp)),
+      console.log("Player data:" + JSON.stringify(this.PlayerData)),
+      this.dataSource = new MatTableDataSource(this.PlayerData),
+       this.dataSource.paginator = this.paginator,
+     this.dataSource.sort = this.sort
+    });
   }
 
-  ngAfterContentChecked()
-   {    
-     this.PlayerData = this.playerService.playerData;
-     //console.log("Player data in table: "+ JSON.stringify(this.PlayerData));   
+  // ngAfterContentChecked()
+  //  {    
+  //    this.PlayerData = this.playerService.playerData;
+  //    //console.log("Player data in table: "+ JSON.stringify(this.PlayerData));   
 
-    this.dataSource = new MatTableDataSource(this.PlayerData); 
-    //this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-   }   
+  //   this.dataSource = new MatTableDataSource(this.PlayerData); 
+  //   //this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  //  }   
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -87,11 +96,19 @@ export class PlayerTableComponent implements OnInit {
   }
 
   
-  displayedColumns:string[] = ['PlayerName','PlayerType','PlayerPosition','PlayerTeam','Actions'];
   
-  dataSource: MatTableDataSource<Player>;
 }
 
+
+const PlayerData:Player[] = [
+  {  PlayerName:'Virat Kohli',PlayerType:'Batsman',PlayerPosition:2,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Batsman',PlayerPosition:4,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' },
+  {  PlayerName:'Kedar Jadhav',PlayerType:'Bowler',PlayerPosition:4,PlayerTeam:'India' }
+]
 // export interface Player
 // {
 //   PlayerName:string;

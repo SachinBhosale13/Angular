@@ -30,7 +30,7 @@ export class AddPlayerDialogComponent implements OnInit {
     this.teamsArr = [];
     this.teamsArr = this.playerService.SelectedTeams;
 
-    console.log("Teams in modal: "+this.teamsArr);
+    //console.log("Teams in modal: "+this.teamsArr);
   }
 
   // mat-error
@@ -41,10 +41,11 @@ export class AddPlayerDialogComponent implements OnInit {
 
   public AddThisPlayer()
   {  
-    if(this.playerService.playerData.some)
-    {
-     // this.playerId = this.playerService.playerData.;
-    }
+    //TODO
+    // if(this.playerService.playerData.some)
+    // {
+    //  // this.playerId = this.playerService.playerData.;
+    // }
       
       //this.playerId = this.playerId + 1;
       this.player = 
@@ -53,7 +54,7 @@ export class AddPlayerDialogComponent implements OnInit {
         PlayerType:this.playerForm.get('playerType').value,
         PlayerPosition:parseInt( this.playerForm.get('playerPosition').value),
         PlayerTeam:this.playerForm.get('playerTeam').value
-      }
+      }      
       
       this.playerService.AddPlayer(this.player);
   }
