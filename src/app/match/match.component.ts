@@ -19,12 +19,13 @@ export class MatchComponent implements OnInit {
 
   public matchForm :FormGroup;
   public matchData:Match;  
-  public isAllPlayers:boolean=false;
+  public allowSubmit:boolean=false;
   public indx:number;
   //public teams:string[]=['Afghanistan','Australia','Bangladesh','England','India','Ireland','New Zealand','Pakistan','South Africa','Sri Lanka','West Indies','Zimbabwe'];
   public teamsArr:string[]=[];
   public t1Indx:number;
   public t2Indx:number; 
+  
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
         bodyBackgroundColor: '#424242', //#424242
@@ -38,7 +39,8 @@ export class MatchComponent implements OnInit {
         clockHandColor: '#c2175b', //#9fbd90
         clockFaceTimeInactiveColor: '#fff'
     }
-}; 
+  }; 
+
 
 
   constructor(public dialog:MatDialog,public playerService:PlayerDataService) {
@@ -57,15 +59,26 @@ export class MatchComponent implements OnInit {
         startTime:new FormControl('',[Validators.required]),
         mAddress:new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(70)])
     });
+    this.playerService.obsTeamPlayersNo.subscribe(result=>{
+      console.log(result);
+      if(result[0] > 0 && result[1] > 0 && result[0] <= 11 && result[1] <= 11 && result[0] == result[1])
+      {
+        this.allowSubmit = true;
+      }
+      else
+      {
+        this.allowSubmit = false;
+      }
+    });
   }
 
-  ngAfterContentChecked()
-  {
-    if(this.playerService.noOfPlayers == 2)
-    {
-      this.isAllPlayers = true;
-    }
-  }
+  // ngAfterContentChecked()
+  // {
+  //   if(this.playerService.noOfPlayers == 2)
+  //   {
+  //     this.allowSubmit = true;
+  //   }
+  // }
 
   public hasError = (controlName: string,errorName: string)=>
   {    

@@ -21,7 +21,6 @@ export class PlayerDataService {
   public noOfPlayers:number=0;
   public request:RequestData;  
   public teamsArr:string[] = teams;
-  // public playerData:Player[]=[];
 
   public playerData : BehaviorSubject<Array<Player>> = new BehaviorSubject([]);
   obsPlayerData = this.playerData.asObservable();
@@ -32,10 +31,6 @@ export class PlayerDataService {
   public teamPlayersNo:BehaviorSubject<Array<number>>=new BehaviorSubject([0,0]);
   obsTeamPlayersNo = this.teamPlayersNo.asObservable();
 
-  
-  //public SelectedTeams:string[]=[];
-  // public response:ResponseData;
-  
   constructor(private http:HttpClient) {}
 
   public AddPlayer(pl:Player)
@@ -47,78 +42,100 @@ export class PlayerDataService {
 
     const currentSelectedTeams= this.SelectedTeams.value;
 
-    // for(let i=0;i<updatedArr.length;i++)
-    // {
-      console.log("Add Player");
-      // console.log(updatedArr);
-      // console.log(updatedArr[i].PlayerTeam);
-      // console.log(currentSelectedTeams[0]);
-      // console.log(currentSelectedTeams[1]);
-
-      console.log(this.teamPlayersNo.value);
+      //console.log("Add Player-----------");
 
       const currentTeamPlayers = this.teamPlayersNo.value;
       let updatedTeamPlayers = [0,0];
-      console.log(currentTeamPlayers);
-      console.log("t1: "+currentTeamPlayers[0]+",t2: "+currentTeamPlayers[1]);
       let t1Players= currentTeamPlayers[0];
       let t2Players= currentTeamPlayers[1];
-      console.log("t1Players: "+t1Players+",t2Players: "+t2Players);
+      //console.log("t1Players: "+t1Players+",t2Players: "+t2Players);
 
       if(pl.PlayerTeam == currentSelectedTeams[0])
-      {  
-        console.log("if1") ;    
-        t1Players = t1Players + 1;     
-        //console.log(currentSelectedTeams[0] + ": "+ t1Players);   
+      {     
+        t1Players = t1Players + 1;      
       }
       if(pl.PlayerTeam == currentSelectedTeams[1])
       {           
-        console.log("if2") ;   
         t2Players = t2Players + 1;
-        //console.log(currentSelectedTeams[1] + ": "+ t2Players);
       }
       updatedTeamPlayers = [t1Players,t2Players];
 
-      this.teamPlayersNo.next(updatedTeamPlayers);   
-      
-      //console.log(this.teamPlayersNo);
-
-    // }
+      this.teamPlayersNo.next(updatedTeamPlayers);
 
     this.noOfPlayers += 1; 
   }
 
   public UpdatePlayer(pl:Player)
   {
-    const currentArr = this.playerData.value;
-    let originPl = currentArr[this.pIndx];
+    //console.log("Edit Player------------")
+    const playerData = this.playerData.value;
+    let originPl = playerData[this.pIndx];
 
-    currentArr.splice(this.pIndx,1,pl);
-    this.playerData.next(currentArr);    
+    playerData.splice(this.pIndx,1,pl);
+    this.playerData.next(playerData);    
 
-    const updatedArr = this.playerData.value;
+    const updatedplayerData = this.playerData.value;
+    let updatedPl = updatedplayerData[this.pIndx];
 
-    let updatedPl = updatedArr[this.pIndx];
     if(originPl.PlayerTeam != updatedPl.PlayerTeam)
     {
-      const currentTeamPlayers = this.teamPlayersNo.value;
-      //TODO
+      const SelectedTeams = this.SelectedTeams.value;
+      const currentTeamPlayers = this.teamPlayersNo.value; 
+      let updatedTeamPlayers = [0,0];
+
+      let t1Players = currentTeamPlayers[0];
+      let t2Players = currentTeamPlayers[1];
+
+      if(originPl.PlayerTeam == SelectedTeams[0])
+      {
+          t1Players -= 1;
+          t2Players += 1;
+      }
+      if(originPl.PlayerTeam == SelectedTeams[1])
+      {
+        t1Players += 1;
+        t2Players -= 1;
+      }
+
+      updatedTeamPlayers = [t1Players,t2Players];
+
+      this.teamPlayersNo.next(updatedTeamPlayers);
     }
 
-    console.log("Array after editing: " + JSON.stringify(this.playerData));
+    //console.log("Array after editing: " + JSON.stringify(this.playerData));
   }
+
 
   public DeletePlayer(pIndex:number)
   {
-    const currentArr = this.playerData.value;
+    //console.log("Delete player----------");
     
-    console.log("Deleting Player: " + pIndex + " of array." )
-    currentArr.splice(pIndex,1);
-    // this.playerData = this.playerData.filter(function(pl){
-    //   return pl.pId !== pIndex;
-    // });
-    this.playerData.next(currentArr);
-    console.log("Player data After delete in table: "+ JSON.stringify(this.playerData)); 
+    const playerData = this.playerData.value;
+    let originPl = playerData[pIndex];
+
+    playerData.splice(pIndex,1);
+    this.playerData.next(playerData);
+ 
+    const SelectedTeams = this.SelectedTeams.value;
+    const currentTeamPlayers = this.teamPlayersNo.value; 
+    let updatedTeamPlayers = [0,0];
+    let t1Players = currentTeamPlayers[0];
+    let t2Players = currentTeamPlayers[1];
+
+    if(originPl.PlayerTeam == SelectedTeams[0])
+    {
+      t1Players -= 1;      
+    }
+    if(originPl.PlayerTeam == SelectedTeams[1])
+    {
+      t2Players -= 1;
+    }
+
+    updatedTeamPlayers = [t1Players,t2Players];
+
+    this.teamPlayersNo.next(updatedTeamPlayers);
+
+    //console.log("Array after deleting: " + JSON.stringify(this.playerData));
   }
 
   public SetPlayer(pl:Player,pIndex:number)
@@ -131,27 +148,17 @@ export class PlayerDataService {
       PlayerTeam : pl.PlayerTeam,
       PlayerType : pl.PlayerType
     }
-    console.log("Player to Edit in service: "+ JSON.stringify(this.editedPlayer));      
+    //console.log("Player to Edit in service: "+ JSON.stringify(this.editedPlayer));      
   }
-
-  
 
   public PushSelectedTeams(t1Val:string,t2Val:string)
   {
     if((t1Val != null || t1Val != "" || t1Val != undefined) && (t2Val != null || t2Val != "" || t2Val != undefined) )
     {
       let newArr = [t1Val,t2Val];
-      this.SelectedTeams.next(newArr)
-      //this.SelectedTeams = [];
-      //this.SelectedTeams.push(t1Val,t2Val);
-      //console.log("Selected teams in service:"+ this.SelectedTeams);
+      this.SelectedTeams.next(newArr);
     }
   }
-
-  // public UpdateResponseData(resp:ResponseData)
-  // {
-  //     this.response = resp;
-  // }
 
   public SubmitMatchDetails(matchData:Match):Observable<any>
   {
@@ -166,7 +173,7 @@ export class PlayerDataService {
       lstPlayers:this.playerData.value     
     }
 
-    console.log("Request Data for API: "+JSON.stringify(this.request));
+    //console.log("Request Data for API: "+JSON.stringify(this.request));
 
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

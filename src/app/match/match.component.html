@@ -95,7 +95,7 @@
 
         <mat-grid-tile>
             <div class="control-container">                
-                <button type="submit" (click)="addPlayer()" class="control-full-width" mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Add Players</button>
+                <button type="submit"  (click)="addPlayer()" [disabled]="!matchForm.valid" class="control-full-width" mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Add Players</button>
                 <!-- [disabled]="!matchForm.valid" -->   
                 <!-- add_circle_outline  -->
             </div>
@@ -106,7 +106,7 @@
 
     <player-table></player-table>
 
-    <button type="button" (click)="submitMatchDetails()" [disabled]="(!matchForm.valid) || (isAllPlayers==false)" class="btnSubmitMatch" mat-raised-button color="primary"><mat-icon>done_outline</mat-icon> Submit Match Details</button>
+    <button type="button" (click)="submitMatchDetails()" [disabled]="!allowSubmit || !this.matchForm.valid" class="btnSubmitMatch" mat-raised-button color="primary"><mat-icon>done_outline</mat-icon> Submit Match Details</button>
 
 
 

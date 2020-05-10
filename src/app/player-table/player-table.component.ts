@@ -35,17 +35,17 @@ export class PlayerTableComponent implements OnInit {
     // console.log("hi");
     this.playerService.obsPlayerData.subscribe(result => {
       this.PlayerData = result,
-      console.log("Observable data" + JSON.stringify(result)),
-      console.log("Player data:" + JSON.stringify(this.PlayerData)),
+      //console.log("Observable data" + JSON.stringify(result)),
+      //console.log("Player data:" + JSON.stringify(this.PlayerData)),
       this.dataSource = new MatTableDataSource(this.PlayerData),      
       this.dataSource.paginator = this.paginator,
       this.dataSource.sort = this.sort
     });
     this.playerService.obsSelectedTeams.subscribe(result => {
       this.teamOne = result[0];
-      console.log(this.teamOne);
+      //console.log(this.teamOne);
       this.teamTwo = result[1];
-      console.log(this.teamTwo);
+      //console.log(this.teamTwo);
       //this.teamOne = result.splice(1,1).toString();
     });
 
@@ -55,12 +55,12 @@ export class PlayerTableComponent implements OnInit {
       if(this.teamOnePlayers > 0 ||  this.teamTwoPlayers > 0)
       {
           this.showTeamPlayers = true;
-          console.log(this.showTeamPlayers);
+          //console.log(this.showTeamPlayers);
       }
       else
       {
         this.showTeamPlayers = false;
-        console.log(this.showTeamPlayers);
+        //console.log(this.showTeamPlayers);
       }
       //console.log(this.teamOnePlayers+","+this.teamTwoPlayers);
     });
@@ -93,7 +93,7 @@ export class PlayerTableComponent implements OnInit {
 
   editPlayer(pIndex:number)
   {    
-    console.log("Editing Player of index: " + pIndex);
+    //console.log("Editing Player of index: " + pIndex);
     var pl:Player;
     
     for(var i=0;i<this.PlayerData.length;i++)
