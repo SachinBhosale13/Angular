@@ -12,6 +12,21 @@
                 <mat-error *ngIf="hasError('playerName','alphabetOnly')">Only alphabets are allowed</mat-error> 
             </mat-form-field>
         </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Team*</mat-label>
+                <mat-select class="teams" formControlName="playerTeam" #playerTeam id="playerTeam" name="playerTeam">
+                    <mat-option *ngFor="let t of SelectedTeams;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
+                </mat-select>
+                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
+
+                <!-- <input matInput placeholder="ex. India" formControlName="playerTeam" id="playerTeam"> 
+                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error> 
+                <mat-error *ngIf="hasError('playerTeam','maxlength')">maximum 25 characters are allowed</mat-error>       -->
+            </mat-form-field>
+        </mat-grid-tile>
+
         <mat-grid-tile>
             <mat-form-field class="control-full-width">
                 <mat-label>Player Type*</mat-label>                
@@ -24,29 +39,19 @@
                 <mat-error *ngIf="hasError('playerType','required')">this field is required</mat-error>   
             </mat-form-field>
         </mat-grid-tile>
+
         <mat-grid-tile>
             <mat-form-field class="control-full-width">
                 <mat-label>Player Position*</mat-label>
-                <input matInput placeholder="ex. 2" formControlName="playerPosition" id="playerPosition"> 
+                <input matInput placeholder="ex. 2" formControlName="playerPosition"  id="playerPosition"> 
                 <mat-error *ngIf="hasError('playerPosition','required')">this field is required</mat-error> 
                 <mat-error *ngIf="hasError('playerPosition','pattern')">position is number from 0 to 11</mat-error> 
                 <mat-error *ngIf="hasError('playerPosition','maxlength')">maximum 2 digits are allowed</mat-error>
+                <mat-error *ngIf="hasError('playerPosition','rejectPosition')">{{playerTeam.value}} already have player with this position</mat-error>
                 
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile>
-            <mat-form-field class="control-full-width">
-                <mat-label>Player Team*</mat-label>
-                <mat-select class="teams" formControlName="playerTeam" id="playerTeam" name="playerTeam">
-                    <mat-option *ngFor="let t of SelectedTeams;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
-                </mat-select>
-                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
-
-                <!-- <input matInput placeholder="ex. India" formControlName="playerTeam" id="playerTeam"> 
-                <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error> 
-                <mat-error *ngIf="hasError('playerTeam','maxlength')">maximum 25 characters are allowed</mat-error>       -->
-            </mat-form-field>
-        </mat-grid-tile>
+        
     </mat-grid-list>         
 </mat-dialog-content>
 

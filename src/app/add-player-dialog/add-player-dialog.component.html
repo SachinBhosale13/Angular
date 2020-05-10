@@ -12,32 +12,11 @@
                 <mat-error *ngIf="hasError('playerName','alphabetOnly')">Only alphabets are allowed</mat-error> 
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile>
-            <mat-form-field class="control-full-width">
-                <mat-label>Player Type*</mat-label>                
-                <mat-select formControlName="playerType" id="playerType">
-                    <mat-option value="Batsman">Batsman</mat-option>
-                    <mat-option value="Bowler">Bowler</mat-option>
-                    <mat-option value="All-rounder">All-rounder</mat-option>
-                    <mat-option value="Wicket-keeper">Wicket-keeper</mat-option>
-                </mat-select>
-                <mat-error *ngIf="hasError('playerType','required')">this field is required</mat-error>   
-            </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <mat-form-field class="control-full-width">
-                <mat-label>Player Position*</mat-label>
-                <input matInput placeholder="ex. 2" formControlName="playerPosition" id="playerPosition"> 
-                <mat-error *ngIf="hasError('playerPosition','required')">this field is required</mat-error> 
-                <mat-error *ngIf="hasError('playerPosition','pattern')">position is number from 0 to 11</mat-error> 
-                <mat-error *ngIf="hasError('playerPosition','maxlength')">maximum 2 digits are allowed</mat-error>
-                
-            </mat-form-field>
-        </mat-grid-tile>
+
         <mat-grid-tile>
             <mat-form-field class="control-full-width">
                 <mat-label>Player Team*</mat-label>
-                <mat-select class="teams" formControlName="playerTeam" id="playerTeam" name="playerTeam">
+                <mat-select class="teams" (selectionChange)="onChangeTeam($event.value)" formControlName="playerTeam" #playerTeam id="playerTeam" name="playerTeam">
                     <mat-option *ngFor="let t of SelectedTeams;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
                 </mat-select>
                 <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
@@ -46,13 +25,44 @@
                 <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error> 
                 <mat-error *ngIf="hasError('playerTeam','maxlength')">maximum 25 characters are allowed</mat-error>       -->
             </mat-form-field>
+
+            <mat-icon *ngIf="enableLockTeam" style="margin-left: 10pt;color: yellowgreen;" (click)="lockTeam = !lockTeam"  matTooltip="Lock to Selected Team" matTooltipPosition="above">{{!lockTeam ? 'lock_open' : 'lock'}}</mat-icon>
+            
         </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Type*</mat-label>                
+                <mat-select (selectionChange)="onChangePlayerType($event.value)" formControlName="playerType"  id="playerType">
+                    <mat-option value="Batsman">Batsman</mat-option>
+                    <mat-option value="Bowler">Bowler</mat-option>
+                    <mat-option value="All-rounder">All-rounder</mat-option>
+                    <mat-option value="Wicket-keeper">Wicket-keeper</mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('playerType','required')">this field is required</mat-error>   
+            </mat-form-field>
+
+            <mat-icon *ngIf="enableLockPlayerType" style="margin-left: 10pt;color:yellowgreen" (click)="lockPlayerType = !lockPlayerType" matTooltip="Lock to selected Type" matTooltipPosition="above">{{!lockPlayerType ? 'lock_open' : 'lock'}}</mat-icon>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <mat-form-field class="control-full-width">
+                <mat-label>Player Position*</mat-label>
+                <input matInput placeholder="ex. 2"  formControlName="playerPosition" id="playerPosition"> 
+                <mat-error *ngIf="hasError('playerPosition','required')">this field is required</mat-error> 
+                <mat-error *ngIf="hasError('playerPosition','pattern')">position is number from 0 to 11</mat-error> 
+                <mat-error *ngIf="hasError('playerPosition','maxlength')">maximum 2 digits are allowed</mat-error>
+                <mat-error *ngIf="hasError('playerPosition','rejectPosition')">{{playerTeam.value}} already have player with this position</mat-error>
+            </mat-form-field>
+        </mat-grid-tile>
+        
     </mat-grid-list>         
 </mat-dialog-content>
 
 <mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close><mat-icon>clear</mat-icon> Cancel</button>
   <button mat-flat-button color="primary" type="submit" (click)="AddThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>add</mat-icon> Add</button>  
+  <!-- <mat-icon style="margin-left: 12pt;">done_all</mat-icon> -->
   <!-- cdkFocusInitial -->
 </mat-dialog-actions>
 

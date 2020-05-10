@@ -25,6 +25,8 @@ export class MatchComponent implements OnInit {
   public teamsArr:string[]=[];
   public t1Indx:number;
   public t2Indx:number; 
+  public disableTeamOne :boolean= false;
+  public disableTeamTwo :boolean= false;
   
   darkTheme: NgxMaterialTimepickerTheme = {
     container: {
@@ -60,14 +62,24 @@ export class MatchComponent implements OnInit {
         mAddress:new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(70)])
     });
     this.playerService.obsTeamPlayersNo.subscribe(result=>{
-      console.log(result);
-      if(result[0] > 0 && result[1] > 0 && result[0] <= 11 && result[1] <= 11 && result[0] == result[1])
-      {
+      //console.log(result);
+      if(result[0] > 0 && result[1] > 0 && result[0] <= 11 && result[1] <= 11 && result[0] == result[1])      {
         this.allowSubmit = true;
       }
-      else
-      {
+      else      {
         this.allowSubmit = false;
+      }
+      if(result[0] > 0)      {
+        this.disableTeamOne = true;
+      }
+      else      {
+        this.disableTeamOne = false;
+      }
+      if(result[1] > 0)      {
+        this.disableTeamTwo = true;
+      }
+      else      {
+        this.disableTeamTwo = false;
       }
     });
   }
@@ -119,7 +131,7 @@ export class MatchComponent implements OnInit {
     this.playerService.PushSelectedTeams(t1Val,t2Val);
     
     
-    this.dialog.open(AddPlayerDialogComponent,{height:'69%',width:'26%'});
+    this.dialog.open(AddPlayerDialogComponent,{height:'69%',width:'30%'});
   }
 
 

@@ -23,7 +23,7 @@ import { ApiResponseDialogComponent } from './api-response-dialog/api-response-d
     AddPlayerDialogComponent,
     PlayerTableComponent,
     EditPlayerDialogComponent,
-    ApiResponseDialogComponent
+    ApiResponseDialogComponent,
   ],
   entryComponents:[AddPlayerDialogComponent,EditPlayerDialogComponent,ApiResponseDialogComponent],
   imports: [

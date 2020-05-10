@@ -37,7 +37,7 @@
                 <mat-form-field class="control-full-width">
                     <mat-label>Team One*</mat-label>
                     <mat-select formControlName="teamOne" id="teamOne" (selectionChange)="onTeamChanged('teamOne',$event.value)" name="teamOne">
-                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx" [value]="t">{{t}}</mat-option>                      
+                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx || disableTeamOne" [value]="t">{{t}}</mat-option>                      
                     </mat-select>
                     <mat-error *ngIf="hasError('teamOne','required')">this field is required</mat-error>
                     <!-- <input matInput formControlName="teamOne" id="teamOne" name="teamOne">
@@ -52,8 +52,8 @@
             <div class="control-container">
                 <mat-form-field class="control-full-width">
                     <mat-label>Team Two*</mat-label>
-                    <mat-select formControlName="teamTwo" id="teamTwo" (selectionChange)="onTeamChanged('teamTwo',$event.value)" name="teamTwo">
-                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx" [value]="t">{{t}}</mat-option>                      
+                    <mat-select  formControlName="teamTwo" id="teamTwo" (selectionChange)="onTeamChanged('teamTwo',$event.value)" name="teamTwo">
+                        <mat-option *ngFor="let t of teamsArr;let i = index" [disabled]="i==t1Indx || i==t2Indx || disableTeamTwo" [value]="t">{{t}}</mat-option>                      
                     </mat-select>
                     <mat-error *ngIf="hasError('teamTwo','required')">this field is required</mat-error>
                     <!-- <input matInput formControlName="teamTwo" id="teamTwo" name="teamTwo">
@@ -95,7 +95,7 @@
 
         <mat-grid-tile>
             <div class="control-container">                
-                <button type="submit"  (click)="addPlayer()" [disabled]="!matchForm.valid" class="control-full-width" mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Add Players</button>
+                <button type="submit"  (click)="addPlayer()"  class="control-full-width" mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Add Players</button>
                 <!-- [disabled]="!matchForm.valid" -->   
                 <!-- add_circle_outline  -->
             </div>

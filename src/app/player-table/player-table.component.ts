@@ -112,7 +112,7 @@ export class PlayerTableComponent implements OnInit {
     }
     this.playerService.SetPlayer(pl,pIndex);
 
-    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'26%'});
+    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'30%'});
 
     // this.plDialog.playerForm.patchValue({
     //   playerName:pName,
