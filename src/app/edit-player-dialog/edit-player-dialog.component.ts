@@ -4,7 +4,7 @@ import {PlayerDataService} from '../services/player-data.service';
 import {CustomValidators} from '../Shared/validator';
 import {Player} from '../Shared/Player';
 import { AbstractControl, ValidationErrors } from "@angular/forms";
-import {MAT_DIALOG_DATA,MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA,MatDialogRef  } from "@angular/material";
 import { inject } from '@angular/core/testing';
 
 
@@ -18,15 +18,15 @@ export class EditPlayerDialogComponent implements OnInit {
   public player:Player;
   public SelectedTeams:string[]=[];
   public pIndx:number;
-  public EditPlayer:Player;
+  public EditPlayerPosition:number;
   public thisTeamIndex: number = 0;
   public t1Positions: number[] = [];
   public t2Positions: number[] = [];
-  private dialogRef:MatDialogRef<EditPlayerDialogComponent>;
+  //private dialogRef:MatDialogRef<EditPlayerDialogComponent>;
 
   //public SelectedTeamsIndx:number[]=[];
 
-  constructor(private playerService:PlayerDataService,@Inject (MAT_DIALOG_DATA) public data:any) {    
+  constructor(private playerService:PlayerDataService,private dialogRef:MatDialogRef<EditPlayerDialogComponent>,@Inject (MAT_DIALOG_DATA) public data:any) {    
     //this.player = this.playerService.editedPlayer;
    }
 
@@ -40,22 +40,30 @@ export class EditPlayerDialogComponent implements OnInit {
     });
 
     this.playerService.obsSelectedTeams.subscribe(result=>{
-      this.SelectedTeams = result
+      this.SelectedTeams = result; 
+      let index = this.SelectedTeams.indexOf(this.data.pl.PlayerTeam,0);       
+      this.thisTeamIndex = index;
     });
 
     this.playerService.obsT1Positions.subscribe(result => {
       this.t1Positions = result;
-      //console.log("t1 Pos: "+ this.t1Positions);
+      console.log("************************************");
+      console.log("t1Positions: "+ this.t1Positions);
+      console.log("************************************");
     });
 
     this.playerService.obsT2Positions.subscribe(result => {
+      console.log("************************************");
       this.t2Positions = result;
+      console.log("t2Positions: "+ this.t2Positions);
+      console.log("************************************");
       //console.log(this.t2Positions);
     });
 
     this.playerService.obsEditPlayer.subscribe(result=>{
-        this.EditPlayer = result;
-        //console.log("EditPlayer:"+this.EditPlayer);
+        this.EditPlayerPosition = result;
+        
+        // console.log("EditPlayerPosition:"+this.EditPlayerPosition);
     });
   }
 
@@ -72,10 +80,13 @@ export class EditPlayerDialogComponent implements OnInit {
 
       result = this.playerService.UpdatePlayer(this.player);
 
-      if(result)
-      {
-        //this.dialogRef.close();
-      }
+
+      this.dialogRef.close();
+
+      // if(result)
+      // {
+      //   //this.dialogRef.close();
+      // }
 
   }
 
@@ -83,16 +94,18 @@ export class EditPlayerDialogComponent implements OnInit {
   {
     
     let changedTeam = this.playerForm.get('playerTeam').value;
-    console.log("Changed Team:" + changedTeam);
+    //console.log("Changed Team:" + changedTeam);
 
     if(changedTeam == this.SelectedTeams[0]){      
       this.thisTeamIndex = 0;
-      console.log("Changed Team Index: 0 ");
+     // console.log("Changed Team Index: 0 ");
     }
     else if(changedTeam == this.SelectedTeams[1]){
       this.thisTeamIndex = 1;
-      console.log("Changed Team Index: 1 ");
+     // console.log("Changed Team Index: 1 ");
     }
+
+    this.playerForm.get('playerPosition').reset();
   }
 
   public rejectPosition() {
@@ -100,23 +113,29 @@ export class EditPlayerDialogComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       
       let value = parseInt(control.value);
+
+      console.log("---------------------------------------");
+
+      console.log("This team index: " + this.thisTeamIndex)
+      console.log("EditPlayer.PlayerPosition:" + this.EditPlayerPosition);
       
       if(this.thisTeamIndex == 0)
       {
-          console.log("t1yes1");
+          console.log("t1yes1 EditPlayer.PlayerPosition:" + this.EditPlayerPosition);
 
-          if(this.t1Positions.includes(value,0) && this.EditPlayer.PlayerPosition != control.value)
+          if(this.t1Positions.includes(value,0) && this.EditPlayerPosition != control.value)
           {
-              console.log("t1yes2");
+             // console.log("t1yes2");
               return {rejectPosition:true};
           }
       }
       if(this.thisTeamIndex == 1)
       {
-        console.log("t2yes1");
-          if(this.t2Positions.includes(value,0))
+        console.log("t2yes1 EditPlayer.PlayerPosition:" + this.EditPlayerPosition);
+
+          if(this.t2Positions.includes(value,0) && this.EditPlayerPosition != control.value)
           {
-            console.log("t2yes2");
+           // console.log("t2yes2");
               return {rejectPosition:true};
           }
       }

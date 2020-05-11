@@ -112,7 +112,7 @@ export class PlayerTableComponent implements OnInit {
     }
     //this.playerService.SetPlayer(pl,pIndex);
    
-    this.playerService.SetEditIndex(pIndex,pl);
+    this.playerService.SetEditPlayer(pIndex,pl.PlayerPosition);
 
     this.dialog.open(EditPlayerDialogComponent,{data:{pl,pIndex},height:'69%',width:'30%'});
 
