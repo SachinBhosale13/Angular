@@ -110,9 +110,11 @@ export class PlayerTableComponent implements OnInit {
         console.log("player found in table:" + JSON.stringify(pl));      
       }       
     }
-    this.playerService.SetPlayer(pl,pIndex);
+    //this.playerService.SetPlayer(pl,pIndex);
+   
+    this.playerService.SetEditIndex(pIndex,pl);
 
-    this.dialog.open(EditPlayerDialogComponent,{height:'69%',width:'30%'});
+    this.dialog.open(EditPlayerDialogComponent,{data:{pl,pIndex},height:'69%',width:'30%'});
 
     // this.plDialog.playerForm.patchValue({
     //   playerName:pName,

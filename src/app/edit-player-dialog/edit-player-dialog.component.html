@@ -16,7 +16,7 @@
         <mat-grid-tile>
             <mat-form-field class="control-full-width">
                 <mat-label>Player Team*</mat-label>
-                <mat-select class="teams" formControlName="playerTeam" #playerTeam id="playerTeam" name="playerTeam">
+                <mat-select class="teams" (selectionChange)="onEditChangeTeam()" formControlName="playerTeam" #playerTeam id="playerTeam" name="playerTeam">
                     <mat-option *ngFor="let t of SelectedTeams;let tIndx = index;let i of teamsIndxArr" [disabled]="i==tIndx" [value]="t">{{t}}</mat-option>                      
                 </mat-select>
                 <mat-error *ngIf="hasError('playerTeam','required')">this field is required</mat-error>
@@ -57,7 +57,7 @@
 
 <mat-dialog-actions class="pull-right">
   <button mat-button mat-dialog-close><mat-icon>clear</mat-icon> Cancel</button>
-  <button mat-flat-button color="primary" type="submit" (click)="UpdateThisPlayer()" [disabled]="!playerForm.valid" ><mat-icon>done</mat-icon> update</button>  
+  <button mat-flat-button color="primary" type="submit" (click)="UpdateThisPlayer()"  [disabled]="!playerForm.valid" ><mat-icon>done</mat-icon> update</button>  
   <!-- cdkFocusInitial -->
 </mat-dialog-actions>
 

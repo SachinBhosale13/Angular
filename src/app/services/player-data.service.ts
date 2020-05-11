@@ -18,9 +18,13 @@ export class PlayerDataService {
   public matchData: Match;
   public editedPlayer: Player;
   public pIndx: number;
+  public pEditIndex:number;
+  
   public noOfPlayers: number = 0;
   public request: RequestData;
   public teamsArr: string[] = teams;
+  public t1SetPlayerPosition : number[];
+  public t2SetPlayerPosition : number[];
 
   public playerData: BehaviorSubject<Array<Player>> = new BehaviorSubject([]);
   obsPlayerData = this.playerData.asObservable();
@@ -36,6 +40,9 @@ export class PlayerDataService {
 
   public t2Positions: BehaviorSubject<Array<number>> = new BehaviorSubject([]);
   obsT2Positions = this.t2Positions.asObservable();
+
+  public EditPlayer:BehaviorSubject<Player> = new BehaviorSubject(null);
+  obsEditPlayer = this.EditPlayer.asObservable();
 
 
   constructor(private http: HttpClient) { }
@@ -57,16 +64,20 @@ export class PlayerDataService {
     const currentT2Positions = this.t2Positions.value;
 
     if (pl.PlayerTeam == currentSelectedTeams[0]) {
+      console.log("Before Adding t1:" + currentT1Positions);
       t1Players = t1Players + 1;
 
       const updatedT1Positions = [...currentT1Positions, pl.PlayerPosition];
-      this.t1Positions.next(updatedT1Positions);
+      this.t1Positions.next(updatedT1Positions);   
+      console.log("After Adding t1:" + updatedT1Positions);   
     }
     if (pl.PlayerTeam == currentSelectedTeams[1]) {
+      console.log("Before Adding t2:" + currentT2Positions);  
       t2Players = t2Players + 1;
 
       const updatedT2Positions = [...currentT2Positions, pl.PlayerPosition];
       this.t2Positions.next(updatedT2Positions);
+      console.log("After Adding t2:" + updatedT2Positions);  
     }
     updatedTeamPlayers = [t1Players, t2Players];
 
@@ -75,17 +86,17 @@ export class PlayerDataService {
     this.noOfPlayers += 1;
   }
 
-  public UpdatePlayer(pl: Player) {
+  public UpdatePlayer(pl: Player): boolean {
     //console.log("Edit Player------------")
     const playerData = this.playerData.value;
-    let originPl = playerData[this.pIndx];
+    let originPl = playerData[this.pEditIndex];
 
-    playerData.splice(this.pIndx, 1, pl);
+    playerData.splice(this.pEditIndex, 1, pl);
     this.playerData.next(playerData);
 
     // updaing team players numbers
     const updatedplayerData = this.playerData.value;
-    let updatedPl = updatedplayerData[this.pIndx];   
+    let updatedPl = updatedplayerData[this.pEditIndex];   
     
     const SelectedTeams = this.SelectedTeams.value;
 
@@ -111,15 +122,32 @@ export class PlayerDataService {
       ////
     }
 
-    //updating team player positions      
+    //updating team player positions  
+    if(originPl.PlayerTeam == SelectedTeams[0])
+    {
+      const t1Positions = this.t1Positions.value;
+
+      t1Positions.splice(originPl.PlayerPosition,0);
+
+      this.t1Positions.next(t1Positions);
+    }
+    if(originPl.PlayerTeam == SelectedTeams[1])
+    {
+      const t2Positions = this.t2Positions.value;
+
+      t2Positions.splice(originPl.PlayerPosition,0);
+
+      this.t1Positions.next(t2Positions);
+    }
+    
     if(updatedPl.PlayerTeam == SelectedTeams[0])
     {
       console.log("before updating actual t1 positions:" + this.t1Positions.value);
       const t1Positions = this.t1Positions.value;
 
-      const index = t1Positions.indexOf(updatedPl.PlayerPosition,0);
+      // const index = t1Positions.indexOf(updatedPl.PlayerPosition,0);
 
-      t1Positions.splice(index,1);
+      // t1Positions.splice(index,1);
 
       const updatedT1Positions = [...t1Positions, updatedPl.PlayerPosition];
 
@@ -131,16 +159,16 @@ export class PlayerDataService {
       console.log("before updating actual t2 positions:" + this.t2Positions.value);
       const t2Positions = this.t2Positions.value;
 
-      const index = t2Positions.indexOf(updatedPl.PlayerPosition,0);
+      // const index = t2Positions.indexOf(updatedPl.PlayerPosition,0);
 
-      t2Positions.splice(index,1);
+      // t2Positions.splice(index,1);
 
       const updatedT2Positions = [...t2Positions, updatedPl.PlayerPosition];
       this.t2Positions.next(updatedT2Positions);
       console.log("After updating actual t2 positions:" + this.t2Positions.value);
     }
     ////
-
+    return true;
     //console.log("Array after editing: " + JSON.stringify(this.playerData));
   }
 
@@ -187,8 +215,14 @@ export class PlayerDataService {
     //console.log("Array after deleting: " + JSON.stringify(this.playerData));
   }
 
+  public SetEditIndex(pIndex:number,pl:Player)
+    {
+      this.pEditIndex = pIndex;
+      this.EditPlayer.next(pl);
+    }
+
   public SetPlayer(pl: Player, pIndex: number) {
-    this.pIndx = pIndex;
+    this.pEditIndex = pIndex;
     this.editedPlayer =
     {
       PlayerName: pl.PlayerName,      
@@ -198,29 +232,55 @@ export class PlayerDataService {
     }
 
     const SelectedTeams = this.SelectedTeams.value;
-    const t1Positions = this.t1Positions.value;
-    const t2Positions = this.t2Positions.value;
+    let t1Positions = this.t1Positions.value;
+    let t2Positions = this.t2Positions.value;
 
     
-    // if(SelectedTeams[0] == this.editedPlayer.PlayerTeam)
-    // {
-    //   console.log("Before edit t1: "+ this.t1Positions.value);
-    //   const index = t1Positions.indexOf(this.editedPlayer.PlayerPosition,0);      
+    if(SelectedTeams[0] == this.editedPlayer.PlayerTeam)
+    {
+      //console.log("Before edit t1: "+ this.t1Positions.value);
+      let index = t1Positions.indexOf(this.editedPlayer.PlayerPosition,0);      
 
-    //   t1Positions.splice(index,1);
-    //   this.t1Positions.next(t1Positions);
-    //   console.log("After edit t1: "+ this.t1Positions.value);
-    // }
-    // else if(SelectedTeams[1] == this.editedPlayer.PlayerTeam)
-    // {
-    //   console.log("Before edit t2: "+ this.t2Positions.value);
-    //   const index = t2Positions.indexOf(this.editedPlayer.PlayerPosition,0)
+      t1Positions.splice(index,1);  
+
+      //putting current position in t1SetPlayerPosition first.
+      if(this.t1SetPlayerPosition != undefined){
+      this.t1SetPlayerPosition.push(this.editedPlayer.PlayerPosition);
+
+      if(this.t1SetPlayerPosition.length !=0){
+        for(let i=0;i<this.t1SetPlayerPosition.length;i++)
+        {
+          if(!t1Positions.includes(this.t1SetPlayerPosition[i],0))
+          {
+            console.log("t1SetPlayerPosition found");
+            t1Positions.push(this.t1SetPlayerPosition[i]);
+        
+            //index = t1Positions.indexOf(this.editedPlayer.PlayerPosition,0); 
+            console.log("New t1Positions:" + t1Positions);
+          }
+        }
+      }
+      }
+
       
-    //   t2Positions.splice(index,1);
-    //   this.t2Positions.next(t2Positions);
-    //   console.log("After edit t2: "+ this.t2Positions.value);
-    // }
-    //console.log("Player to Edit in service: "+ JSON.stringify(this.editedPlayer));      
+
+      //t1Positions.splice(index,1);      
+
+      this.t1Positions.next(t1Positions);
+      console.log("Set edit t1: "+ this.t1Positions.value);
+    }
+    else if(SelectedTeams[1] == this.editedPlayer.PlayerTeam)
+    {
+      //console.log("Before edit t2: "+ this.t2Positions.value);
+      const index = t2Positions.indexOf(this.editedPlayer.PlayerPosition,0)
+      
+       t2Positions.splice(index,1);
+      // this.t2SetPlayerPosition = pl.PlayerPosition;
+
+      this.t2Positions.next(t2Positions);
+      console.log("Set edit t2: "+ this.t2Positions.value);
+    }
+    // //console.log("Player to Edit in service: "+ JSON.stringify(this.editedPlayer));      
   }
 
   public PushSelectedTeams(t1Val: string, t2Val: string) {
