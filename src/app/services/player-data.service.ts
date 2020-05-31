@@ -9,6 +9,7 @@ import { RequestData } from '../Shared/RequestData';
 import { BehaviorSubject } from 'rxjs';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ArrayDataSource } from '@angular/cdk/collections';
+import {Country} from '../Shared/Country';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class PlayerDataService {
   public noOfPlayers: number = 0;
   public request: RequestData;
   public teamsArr: string[] = teams;
+  
   public t1SetPlayerPosition : number[];
   public t2SetPlayerPosition : number[];
 
@@ -45,7 +47,10 @@ export class PlayerDataService {
   obsEditPlayer = this.EditPlayer.asObservable();
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    
+    
+   }
 
   public AddPlayer(pl: Player) {
     console.log("------------------------------------------");
@@ -361,6 +366,12 @@ export class PlayerDataService {
 
     // this.response = null;
     return this.http.post<ResponseData>(this.baseUrl + 'api/SubmitMatchData', this.request, options);
+  }
+
+  public GetCountries()
+  {
+    console.log("requested countries");
+    return this.http.get<Country[]>(this.baseUrl + 'api/GetCountries');
   }
 }
 

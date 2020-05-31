@@ -9,6 +9,7 @@ import {NgxMaterialTimepickerTheme} from 'ngx-material-timepicker';
 import {Match} from '../Shared/Match';
 import { ApiResponseDialogComponent } from '../api-response-dialog/api-response-dialog.component';
 import { error } from 'util';
+import {Country} from '../Shared/Country';
 
 @Component({
   selector: 'Match',
@@ -23,6 +24,7 @@ export class MatchComponent implements OnInit {
   public indx:number;
   //public teams:string[]=['Afghanistan','Australia','Bangladesh','England','India','Ireland','New Zealand','Pakistan','South Africa','Sri Lanka','West Indies','Zimbabwe'];
   public teamsArr:string[]=[];
+  // public countries:Country[];
   public t1Indx:number;
   public t2Indx:number; 
   public disableTeamOne :boolean= false;
@@ -53,6 +55,12 @@ export class MatchComponent implements OnInit {
 
   ngOnInit() 
   {
+    // this.playerService.GetCountries().subscribe(result=> {
+    //   //console.log("Countries: " + JSON.stringify(result)),
+    //   this.countries = result;
+    //   console.log("this.countries: " + JSON.stringify(this.countries));
+    // });
+
     this.matchForm = new FormGroup({
         matchName:new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(50)]),
         matchDate:new FormControl('',[Validators.required]),
